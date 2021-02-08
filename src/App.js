@@ -35,7 +35,7 @@ function App() {
     });
   }
 
-  sendRequest("GET", getUrl("friends.search", { count: 90, fields: "photo_100" }), true)
+  sendRequest("GET", getUrl("friends.search", { count: 90, fields: "photo_100" }))
     .then((data) => {
       console.log(data);
     })
