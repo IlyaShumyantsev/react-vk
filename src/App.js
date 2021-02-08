@@ -3,7 +3,7 @@ import LogIn from "./components/LogIn";
 
 function App() {
   const TOKEN =
-    "53b17d95654f4734f5fb9108ed140e2d9efa1a6cf4242b69573be0c2dfe3706a1c640c08bdb306d714295";
+    "bf2f66a107a710d62369f94e71d7582c8eaaeb6c7a2d1eb5d4d16da10cc84771b2b8ace1935dec7ddfc31";
 
   const param = (params) => new URLSearchParams(Object.entries(params));
 
@@ -11,6 +11,7 @@ function App() {
     if (!method) throw new Error("No method");
     params = params || {};
     params["access_token"] = TOKEN;
+    params["scope"] = "offline";
     return `https://api.vk.com/method/${method}?` + param(params) + `&v=5.52`;
   }
 
