@@ -11,7 +11,6 @@ export function userReducer(state = initialState, action) {
     case LOGIN_REQUEST: {
       return { ...state, isFetching: true, error: "" };
     }
-
     case LOGIN_SUCCESS: {
       return {
         ...state,
@@ -19,7 +18,6 @@ export function userReducer(state = initialState, action) {
         name: action.payload,
       };
     }
-
     case LOGIN_FAIL: {
       return {
         ...state,
@@ -27,7 +25,6 @@ export function userReducer(state = initialState, action) {
         error: action.payload.message,
       };
     }
-
     default: {
       return state;
     }

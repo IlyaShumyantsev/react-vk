@@ -1,27 +1,27 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-export function User({ name, error, isFetching, handleLogin }) {
-  function renderTemplate() {
-    if (error) {
+export class User extends React.Component {
+  renderTemplate() {
+    if (this.props.error) {
       return <p>Во время запроса произошла ошибка, обновите страницу</p>;
     }
-
-    if (isFetching) {
+    if (this.props.isFetching) {
       return <p>Загружаю...</p>;
     }
-
-    if (name) {
-      return <p>Привет, {name}!</p>;
-    } else {
-      return (
-        <button className="btn" onClick={handleLogin}>
-          Войти
-        </button>
-      );
+    if (this.props.name) {
+      return <p>Привет, {this.props.name}!</p>;
     }
+    return (
+      <button className="btn" onClick={this.props.handleLogin}>
+        Войти
+      </button>
+    );
   }
-  return <div className="ib user">{renderTemplate()}</div>;
+
+  render() {
+    return <div className="ib user">{this.renderTemplate()}</div>;
+  }
 }
 
 User.propTypes = {

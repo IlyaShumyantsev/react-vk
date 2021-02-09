@@ -1,14 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-export function Page({ year, photos, isFetching, getPhotos }) {
-  function onBtnClick(e) {
+const Page = ({ photos, year, isFetching, getPhotos }) => {
+  const onBtnClick = (e) => {
     const year = +e.currentTarget.innerText;
     getPhotos(year);
-  }
+  };
 
   return (
     <div className="ib page">
+      {/* Просто тест */}
       <p>
         <button className="btn" onClick={onBtnClick}>
           2021
@@ -24,7 +25,9 @@ export function Page({ year, photos, isFetching, getPhotos }) {
       {isFetching ? <p>Загрузка</p> : <p>У тебя {photos.length} фото.</p>}
     </div>
   );
-}
+};
+
+export default Page;
 
 Page.propTypes = {
   year: PropTypes.number.isRequired,
