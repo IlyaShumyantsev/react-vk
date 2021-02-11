@@ -1,20 +1,20 @@
 import React from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Page from "../components/Page";
+// import Page from "../components/Page";
 import NavPanel from "../components/NavPanel";
 import NotFound from "../components/Errors/NotFound";
 import { getPhotos } from "../actions/PageActions";
-import { handleLogin, handleLogout, getAva } from "../actions/UserActions";
+import { handleLogin, handleLogout, getAvatar } from "../actions/UserActions";
 
 function App(props) {
   const {
     user,
-    page,
-    getPhotosActions,
+    // page,
+    // getPhotosActions,
     handleLoginAction,
     handleLogoutAction,
-    handleGetAvaAction,
+    handleGetAvatarAction,
   } = props;
   return (
     <div className="app">
@@ -23,22 +23,9 @@ function App(props) {
           user={user}
           handleLogin={handleLoginAction}
           handleLogout={handleLogoutAction}
-          handleGetAva={handleGetAvaAction}
+          handleGetAvatar={handleGetAvatarAction}
         />
         <Switch>
-          {/* <Route
-            path="/login"
-            component={() => {
-              return (
-                <User
-                  name={user.name}
-                  isFetching={user.isFetching}
-                  error={user.error}
-                  handleLogin={handleLoginAction}
-                />
-              );
-            }}
-          /> */}
           <Route component={NotFound} />
         </Switch>
       </Router>
@@ -48,18 +35,11 @@ function App(props) {
         isFetching={page.isFetching}
         getPhotos={getPhotosActions}
       /> */}
-      {/* <User
-        name={user.name}
-        isFetching={user.isFetching}
-        error={user.error}
-        handleLogin={handleLoginAction}
-      /> */}
     </div>
   );
 }
 
 const mapStateToProps = (store) => {
-  console.log(store);
   return {
     user: store.user,
     page: store.page,
@@ -71,7 +51,7 @@ const mapDispatchToProps = (dispatch) => {
     getPhotosActions: (year) => dispatch(getPhotos(year)),
     handleLoginAction: () => dispatch(handleLogin()),
     handleLogoutAction: () => dispatch(handleLogout()),
-    handleGetAvaAction: (userId) => dispatch(getAva(userId)),
+    handleGetAvatarAction: (userId) => dispatch(getAvatar(userId)),
   };
 };
 

@@ -8,20 +8,20 @@ import {
   Nav,
   NavItem,
   NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
+  // UncontrolledDropdown,
+  // DropdownToggle,
+  // DropdownMenu,
+  // DropdownItem,
 } from "reactstrap";
 import Auth from "./User/Auth";
 
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
-const NavPanel = ({ user, handleLogin, handleLogout, handleGetAva }) => {
+const NavPanel = ({ user, handleLogin, handleLogout, handleGetAvatar }) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
 
-  const { name, error, isFetching, userId } = user;
+  const { name, error, isFetching, userId, avatarIsLoaded, avatar } = user;
 
   return (
     <div>
@@ -45,9 +45,11 @@ const NavPanel = ({ user, handleLogin, handleLogout, handleGetAva }) => {
             error={error}
             isFetching={isFetching}
             userId={userId}
+            avatarIsLoaded={avatarIsLoaded}
+            avatar={avatar}
             handleLogin={handleLogin}
             handleLogout={handleLogout}
-            handleGetAva={handleGetAva}
+            handleGetAvatar={handleGetAvatar}
           ></Auth>
         </Collapse>
       </Navbar>
@@ -61,18 +63,5 @@ NavPanel.propTypes = {
   user: PropTypes.object.isRequired,
   handleLogin: PropTypes.func.isRequired,
   handleLogout: PropTypes.func.isRequired,
+  handleGetAvatar: PropTypes.func.isRequired,
 };
-
-// export default class Nav extends React.Component {
-//   render() {
-//     return (
-//       <nav className="navbar navbar-expand-md navbar-light bg-light sticky-top">
-//         <div className="container-fluid"></div>
-//       </nav>
-//       // <div>
-//       //   <Link to="/">Главная</Link>
-//       //   <Link to="/login">Вход</Link>
-//       // </div>
-//     );
-//   }
-// }

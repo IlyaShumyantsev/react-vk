@@ -6,64 +6,56 @@ export const LOGOUT_REQUEST = "LOGOUT_REQUEST";
 export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
 export const LOGOUT_FAIL = "LOGOUT_FAIL";
 
-export const AVA_REQUEST = "AVA_REQUEST";
-export const AVA_SUCCESS = "AVA_SUCCESS";
-export const AVA_FAIL = "AVA_FAIL";
+export const AVATAR_REQUEST = "AVATAR_REQUEST";
+export const AVATAR_SUCCESS = "AVATAR_SUCCESS";
+export const AVATAR_FAIL = "AVATAR_FAIL";
 
 /* global VK */
 
 export function handleLogin() {
+  const [connected, notAuthorized] = ["connected", "not_authorized"];
   return function (dispatch) {
     dispatch({
       type: LOGIN_REQUEST,
     });
-    VK.Auth.login(
-      (response) => {
-        if (response.status === "connected" && response.session) {
-          dispatch({
-            type: LOGIN_SUCCESS,
-            error: false,
-            userId: response.session.mid,
-            payload: response.session.user.first_name,
-          });
-        } else if (response.status === "not_authorized ") {
-          dispatch({
-            type: LOGIN_FAIL,
-            error: true,
-            payload: new Error("Доступ к приложению запрещен"),
-          });
-        } else {
-          dispatch({
-            type: LOGIN_FAIL,
-            error: true,
-            payload: new Error("Пользователь не авторизован ВКонтакте"),
-          });
-        }
-      },
-      65536,
-      2,
-      1,
-      4
-    ); // код доступа
+    VK.Auth.login((response) => {
+      if (response.status === connected && response.session) {
+        dispatch({
+          type: LOGIN_SUCCESS,
+          userId: response.session.mid,
+          payload: response.session.user.first_name,
+        });
+      } else if (response.status === notAuthorized) {
+        dispatch({
+          type: LOGIN_FAIL,
+          payload: new Error("Доступ к приложению запрещен"),
+        });
+      } else {
+        dispatch({
+          type: LOGIN_FAIL,
+          payload: new Error("Пользователь не авторизован ВКонтакте"),
+        });
+      }
+    }, 65536); // код доступа
   };
 }
 
 export function handleLogout() {
+  const [unknown] = ["unknown"];
   return function (dispatch) {
     dispatch({
       type: LOGOUT_REQUEST,
     });
     VK.Auth.logout((response) => {
-      if (response.status === "unknown") {
+      if (response.status === unknown) {
         dispatch({
           type: LOGOUT_SUCCESS,
-          error: false,
           payload: response.status,
+          avatar: "",
         });
       } else {
         dispatch({
           type: LOGOUT_FAIL,
-          error: true,
           payload: new Error("Ошибка выхода"),
         });
       }
@@ -71,15 +63,13 @@ export function handleLogout() {
   };
 }
 
-// VK.api("users.get", { user_ids: "315353653", fields:"photo_100", name_case: "nom", v: 5.62}, (k) => console.log('k',k))
-
-export function getAva(userId) {
+export function getAvatar(userId) {
   return function (dispatch) {
     dispatch({
-      type: AVA_REQUEST,
+      type: AVATAR_REQUEST,
     });
     VK.api(
-      "user.get",
+      "users.get",
       {
         user_ids: userId,
         fields: "photo_100",
@@ -87,11 +77,17 @@ export function getAva(userId) {
         v: 5.62,
       },
       (response) => {
-        dispatch({
-          type: AVA_SUCCESS,
-          payload: "",
-        });
-        console.log(response);
+        if (!response.error) {
+          dispatch({
+            type: AVATAR_SUCCESS,
+            payload: response.response[0].photo_100,
+          });
+        } else {
+          dispatch({
+            type: AVATAR_FAIL,
+            payload: new Error("Аватарка не была загружена"),
+          });
+        }
       }
     );
   };

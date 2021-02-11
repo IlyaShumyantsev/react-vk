@@ -5,16 +5,17 @@ import {
   LOGOUT_SUCCESS,
   LOGOUT_REQUEST,
   LOGOUT_FAIL,
-  AVA_REQUEST,
-  AVA_SUCCESS,
-  AVA_FAIL,
+  AVATAR_REQUEST,
+  AVATAR_SUCCESS,
+  AVATAR_FAIL,
 } from "../actions/UserActions";
 
 const initialState = {
   name: "",
   error: "",
-  ava: "",
+  avatar: "",
   userId: "",
+  avatarIsLoaded: false,
   isFetching: false,
 };
 
@@ -42,7 +43,15 @@ export function userReducer(state = initialState, action) {
       return { ...state, isFetching: true, error: "" };
     }
     case LOGOUT_SUCCESS: {
-      return { ...state, isFetching: false, name: "", userId: "", error: "" };
+      return {
+        ...state,
+        isFetching: false,
+        name: "",
+        userId: "",
+        error: "",
+        avatar: "",
+        avatarIsLoaded: false,
+      };
     }
     case LOGOUT_FAIL: {
       return {
@@ -51,17 +60,24 @@ export function userReducer(state = initialState, action) {
         error: action.payload.message,
       };
     }
-    case AVA_REQUEST: {
+    case AVATAR_REQUEST: {
       return { ...state, isFetching: true, error: "" };
     }
-    case AVA_SUCCESS: {
-      return { ...state, isFetching: false, error: "" };
+    case AVATAR_SUCCESS: {
+      return {
+        ...state,
+        isFetching: false,
+        error: "",
+        avatarIsLoaded: true,
+        avatar: action.payload,
+      };
     }
-    case AVA_FAIL: {
+    case AVATAR_FAIL: {
       return {
         ...state,
         isFetching: false,
         error: action.payload.message,
+        avatarIsLoaded: false,
       };
     }
     default: {

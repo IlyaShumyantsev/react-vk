@@ -1,9 +1,9 @@
 import React from "react";
 import {
   Button,
-  Row,
-  ButtonGroup,
-  UncontrolledDropdown,
+  // Row,
+  // ButtonGroup,
+  // UncontrolledDropdown,
   DropdownToggle,
   DropdownItem,
   DropdownMenu,
@@ -19,11 +19,17 @@ class Auth extends React.Component {
     super(props);
     this.state = {
       dropdownOpen: false,
-      ava: "",
     };
   }
 
   toggle = () => this.setState({ dropdownOpen: !this.state.dropdownOpen });
+
+  componentDidUpdate() {
+    const { avatarIsLoaded, isFetching, userId } = this.props;
+    if (!avatarIsLoaded && !isFetching && userId) {
+      this.props.handleGetAvatar(this.props.userId);
+    }
+  }
 
   render() {
     if (this.props.error) {
@@ -40,19 +46,10 @@ class Auth extends React.Component {
       return <DotsLoader></DotsLoader>;
     }
     if (this.props.name) {
-      this.props.handleGetAva(this.props.userId);
       return (
-        // <Row>
-        //   <ButtonGroup>
-        //     <Button disabled>{this.props.name}</Button>
-        //     <Button outline color="danger" onClick={this.props.handleLogout}>
-        //       Выйти
-        //     </Button>
-        //   </ButtonGroup>
-        // </Row>
         <Media>
-          <Media left href="#">
-            {/* <Media object data-src={this.props.handleGetAva} alt="Generic placeholder image" /> */}
+          <Media left>
+            <Media object src={this.props.avatar} alt="Generic placeholder image" />
           </Media>
           <Media body>
             <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
@@ -84,8 +81,12 @@ export default Auth;
 
 Auth.propTypes = {
   name: PropTypes.string.isRequired,
-  error: PropTypes.string,
+  error: PropTypes.string.isRequired,
   isFetching: PropTypes.bool.isRequired,
+  userId: PropTypes.string.isRequired,
+  avatarIsLoaded: PropTypes.bool.isRequired,
+  avatar: PropTypes.string.isRequired,
   handleLogin: PropTypes.func.isRequired,
   handleLogout: PropTypes.func.isRequired,
+  handleGetAvatar: PropTypes.func.isRequired,
 };
