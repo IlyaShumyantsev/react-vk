@@ -27,7 +27,6 @@ export function handleLogin() {
             error: false,
             payload: response.session.user.first_name,
           });
-          getAva();
         } else if (response.status === "not_authorized ") {
           dispatch({
             type: LOGIN_FAIL,
