@@ -21,7 +21,7 @@ const NavPanel = ({ user, handleLogin, handleLogout, handleGetAva }) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
 
-  const { name, error, isFetching } = user;
+  const { name, error, isFetching, userId } = user;
 
   return (
     <div>
@@ -31,28 +31,20 @@ const NavPanel = ({ user, handleLogin, handleLogout, handleGetAva }) => {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
             <NavItem>
-              <NavLink href="/components/">Components</NavLink>
+              <NavLink href="/">Главная</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink>
+              <NavLink href="https://github.com/IlyaShumyantsev/react-vk/tree/develop">
+                GitHub
+              </NavLink>
             </NavItem>
-            <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret>
-                Options
-              </DropdownToggle>
-              <DropdownMenu right>
-                <DropdownItem>Option 1</DropdownItem>
-                <DropdownItem>Option 2</DropdownItem>
-                <DropdownItem divider />
-                <DropdownItem>Reset</DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
           </Nav>
 
           <Auth
             name={name}
             error={error}
             isFetching={isFetching}
+            userId={userId}
             handleLogin={handleLogin}
             handleLogout={handleLogout}
             handleGetAva={handleGetAva}

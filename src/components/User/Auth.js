@@ -19,6 +19,7 @@ class Auth extends React.Component {
     super(props);
     this.state = {
       dropdownOpen: false,
+      ava: "",
     };
   }
 
@@ -39,6 +40,7 @@ class Auth extends React.Component {
       return <DotsLoader></DotsLoader>;
     }
     if (this.props.name) {
+      this.props.handleGetAva(this.props.userId);
       return (
         // <Row>
         //   <ButtonGroup>
@@ -51,7 +53,6 @@ class Auth extends React.Component {
         <Media>
           <Media left href="#">
             {/* <Media object data-src={this.props.handleGetAva} alt="Generic placeholder image" /> */}
-            {this.props.handleGetAva()}
           </Media>
           <Media body>
             <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>

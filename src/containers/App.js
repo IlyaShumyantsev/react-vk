@@ -71,7 +71,7 @@ const mapDispatchToProps = (dispatch) => {
     getPhotosActions: (year) => dispatch(getPhotos(year)),
     handleLoginAction: () => dispatch(handleLogin()),
     handleLogoutAction: () => dispatch(handleLogout()),
-    handleGetAvaAction: () => dispatch(getAva()),
+    handleGetAvaAction: (userId) => dispatch(getAva(userId)),
   };
 };
 

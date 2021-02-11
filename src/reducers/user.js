@@ -14,6 +14,7 @@ const initialState = {
   name: "",
   error: "",
   ava: "",
+  userId: "",
   isFetching: false,
 };
 
@@ -27,6 +28,7 @@ export function userReducer(state = initialState, action) {
         ...state,
         isFetching: false,
         name: action.payload,
+        userId: action.userId,
       };
     }
     case LOGIN_FAIL: {
@@ -40,7 +42,7 @@ export function userReducer(state = initialState, action) {
       return { ...state, isFetching: true, error: "" };
     }
     case LOGOUT_SUCCESS: {
-      return { ...state, isFetching: false, name: "", error: "" };
+      return { ...state, isFetching: false, name: "", userId: "", error: "" };
     }
     case LOGOUT_FAIL: {
       return {

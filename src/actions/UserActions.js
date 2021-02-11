@@ -1,5 +1,3 @@
-import axios from "axios";
-
 export const LOGIN_REQUEST = "LOGIN_REQUEST";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAIL = "LOGIN_FAIL";
@@ -25,6 +23,7 @@ export function handleLogin() {
           dispatch({
             type: LOGIN_SUCCESS,
             error: false,
+            userId: response.session.mid,
             payload: response.session.user.first_name,
           });
         } else if (response.status === "not_authorized ") {
@@ -41,8 +40,10 @@ export function handleLogin() {
           });
         }
       },
-      4,
-      2
+      65536,
+      2,
+      1,
+      4
     ); // код доступа
   };
 }
@@ -70,31 +71,28 @@ export function handleLogout() {
   };
 }
 
-export function getAva() {
+// VK.api("users.get", { user_ids: "315353653", fields:"photo_100", name_case: "nom", v: 5.62}, (k) => console.log('k',k))
+
+export function getAva(userId) {
   return function (dispatch) {
-    axios({
-      url: "https://api.vk.com/method/users.get?user_ids=" + "nsx345" + "&fields=photo_max_orig",
-      type: "GET",
-      dataType: "jsonp",
-      crossDomain: true,
-    }).then((response) => {
-      dispatch({
-        type: AVA_REQUEST,
-      });
-      if (!response.error) {
+    dispatch({
+      type: AVA_REQUEST,
+    });
+    VK.api(
+      "user.get",
+      {
+        user_ids: userId,
+        fields: "photo_100",
+        name_case: "nom",
+        v: 5.62,
+      },
+      (response) => {
         dispatch({
           type: AVA_SUCCESS,
-          error: false,
-        });
-        console.log(response);
-      } else {
-        dispatch({
-          type: AVA_FAIL,
-          error: true,
-          payload: new Error("Ошибка загрузки аватарки"),
+          payload: "",
         });
         console.log(response);
       }
-    });
+    );
   };
 }
