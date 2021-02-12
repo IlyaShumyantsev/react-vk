@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import {
   Collapse,
@@ -11,35 +11,37 @@ import {
   // UncontrolledDropdown,
   // DropdownToggle,
   // DropdownMenu,
-  // DropdownItem,
+  DropdownItem,
 } from "reactstrap";
 import Auth from "./User/Auth";
 
-// import { Link } from "react-router-dom";
-
-const NavPanel = ({ user, handleLogin, handleLogout, handleGetAvatar }) => {
+const NavPanel = ({ user, navbar, handleLogin, handleLogout, handleGetAvatar, handleNavbar }) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
 
+  useEffect(() => {
+    if (user.isLogin && user.isFetching) {
+      handleNavbar(user.isLogin);
+    }
+  });
+
   const { name, error, isFetching, userId, avatarIsLoaded, avatar } = user;
+  const { title } = navbar;
 
   return (
     <div>
-      <Navbar color="light" light expand="md">
+      <Navbar color="warning" light expand="md">
         <NavbarBrand href="/">react-vk</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
-            <NavItem>
-              <NavLink href="/">Главная</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="https://github.com/IlyaShumyantsev/react-vk/tree/develop">
-                GitHub
+            {Object.keys(Object.fromEntries(title)).map((item, i) => (
+              <NavLink key={i} href={Object.fromEntries(title)[item]}>
+                {item}
               </NavLink>
-            </NavItem>
+            ))}
           </Nav>
-
+          <DropdownItem divider />
           <Auth
             name={name}
             error={error}

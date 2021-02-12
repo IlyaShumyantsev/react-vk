@@ -1,7 +1,7 @@
 import React from "react";
 import {
   Button,
-  // Row,
+  Row,
   // ButtonGroup,
   // UncontrolledDropdown,
   DropdownToggle,
@@ -36,7 +36,7 @@ class Auth extends React.Component {
       return (
         <div>
           <InfoModal props={{ message: this.props.error, title: "Ошибка входа" }}></InfoModal>
-          <Button outline color="primary" onClick={this.props.handleLogin}>
+          <Button outline color="light" onClick={this.props.handleLogin}>
             Войти
           </Button>
         </div>
@@ -46,31 +46,39 @@ class Auth extends React.Component {
       return <DotsLoader></DotsLoader>;
     }
     if (this.props.name) {
+      const style = {
+        image: { width: "32px", height: "32px" },
+      };
       return (
-        <Media>
-          <Media left>
-            <Media object src={this.props.avatar} alt="Generic placeholder image" />
-          </Media>
-          <Media body>
-            <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-              <Button disabled id="caret" color="success">
-                {this.props.name}
-              </Button>
-              <DropdownToggle split color="success" />
-              <DropdownMenu>
-                <DropdownItem disabled>Действие 1</DropdownItem>
-                <DropdownItem disabled>Действие 2</DropdownItem>
-                <DropdownItem disabled>Действие 3</DropdownItem>
-                <DropdownItem divider />
-                <DropdownItem onClick={this.props.handleLogout}>Выйти</DropdownItem>
-              </DropdownMenu>
-            </ButtonDropdown>
-          </Media>
+        <Media className="align-middle d-flex h-100">
+          <img
+            alt="avatar"
+            className="avatar rounded-circle align-self-center ml-3"
+            src={this.props.avatar}
+            style={style.image}
+          ></img>
+          <ButtonDropdown
+            isOpen={this.state.dropdownOpen}
+            toggle={this.toggle}
+            className="align-middle justify-content-center align-self-center col"
+          >
+            <Button disabled id="caret" color="light">
+              {this.props.name}
+            </Button>
+            <DropdownToggle split color="light" />
+            <DropdownMenu>
+              <DropdownItem disabled>Действие 1</DropdownItem>
+              <DropdownItem disabled>Действие 2</DropdownItem>
+              <DropdownItem disabled>Действие 3</DropdownItem>
+              <DropdownItem divider />
+              <DropdownItem onClick={this.props.handleLogout}>Выйти</DropdownItem>
+            </DropdownMenu>
+          </ButtonDropdown>
         </Media>
       );
     }
     return (
-      <Button outline color="primary" onClick={this.props.handleLogin}>
+      <Button outline color="light" onClick={this.props.handleLogin}>
         Войти
       </Button>
     );

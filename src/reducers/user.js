@@ -17,6 +17,7 @@ const initialState = {
   userId: "",
   avatarIsLoaded: false,
   isFetching: false,
+  isLogin: false,
 };
 
 export function userReducer(state = initialState, action) {
@@ -30,6 +31,7 @@ export function userReducer(state = initialState, action) {
         isFetching: false,
         name: action.payload,
         userId: action.userId,
+        isLogin: true,
       };
     }
     case LOGIN_FAIL: {
@@ -37,6 +39,7 @@ export function userReducer(state = initialState, action) {
         ...state,
         isFetching: false,
         error: action.payload.message,
+        isLogin: false,
       };
     }
     case LOGOUT_REQUEST: {
@@ -51,6 +54,7 @@ export function userReducer(state = initialState, action) {
         error: "",
         avatar: "",
         avatarIsLoaded: false,
+        isLogin: false,
       };
     }
     case LOGOUT_FAIL: {
@@ -58,6 +62,7 @@ export function userReducer(state = initialState, action) {
         ...state,
         isFetching: false,
         error: action.payload.message,
+        isLogin: true,
       };
     }
     case AVATAR_REQUEST: {
