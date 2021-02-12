@@ -20,10 +20,8 @@ const NavPanel = ({ user, navbar, handleLogin, handleLogout, handleGetAvatar, ha
   const toggle = () => setIsOpen(!isOpen);
 
   useEffect(() => {
-    if (user.isLogin && user.isFetching) {
-      handleNavbar(user.isLogin);
-    }
-  });
+    handleNavbar(user.isLogin);
+  }, [handleNavbar, user]);
 
   const { name, error, isFetching, userId, avatarIsLoaded, avatar } = user;
   const { title } = navbar;
