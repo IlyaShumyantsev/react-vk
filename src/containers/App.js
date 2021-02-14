@@ -1,10 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-// import Page from "../components/Page";
+import Photos from "../components/User/Photos";
 import NavPanel from "../components/NavPanel";
 import NotFound from "../components/Errors/NotFound";
-import { getPhotos } from "../actions/PageActions";
+import { getPhotos } from "../actions/PhotosActions";
 import { handleLogin, handleLogout, getAvatar } from "../actions/UserActions";
 import { handleNavbar } from "../actions/NavbarActions";
 
@@ -12,8 +12,8 @@ function App(props) {
   const {
     user,
     navbar,
-    // page,
-    // getPhotosActions,
+    photos,
+    getPhotosActions,
     handleLoginAction,
     handleLogoutAction,
     handleGetAvatarAction,
@@ -25,21 +25,30 @@ function App(props) {
         <NavPanel
           user={user}
           navbar={navbar}
+          getPhotos={getPhotosActions}
           handleLogin={handleLoginAction}
           handleLogout={handleLogoutAction}
           handleGetAvatar={handleGetAvatarAction}
           handleNavbar={handleNavbarAction}
         />
         <Switch>
+          <Route
+            exact
+            path="/photos"
+            component={() => (
+              <Photos
+                photos={photos.photos}
+                year={photos.year}
+                years={photos.years}
+                isFetching={photos.isFetching}
+                error={photos.error}
+                getPhotos={getPhotosActions}
+              />
+            )}
+          />
           <Route component={NotFound} />
         </Switch>
       </Router>
-      {/* <Page
-        photos={page.photos}
-        year={page.year}
-        isFetching={page.isFetching}
-        getPhotos={getPhotosActions}
-      /> */}
     </div>
   );
 }
@@ -47,7 +56,7 @@ function App(props) {
 const mapStateToProps = (store) => {
   return {
     user: store.user,
-    page: store.page,
+    photos: store.photos,
     navbar: store.navbar,
   };
 };

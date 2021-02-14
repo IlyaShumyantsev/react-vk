@@ -18,7 +18,7 @@ export function navbarReducer(state = initialState, action) {
         title: new Map([
           ["Главная", "/"],
           ["Стена", "/"],
-          ["Фото", "/"],
+          ["Фото", "/photos"],
           ["Музыка", "/"],
           ["GitHub", "https://github.com/IlyaShumyantsev/react-vk/tree/develop"],
         ]),
