@@ -1,9 +1,6 @@
-import React from "react";
+import React, { Component } from "react";
 import {
   Button,
-  // Row,
-  // ButtonGroup,
-  // UncontrolledDropdown,
   DropdownToggle,
   DropdownItem,
   DropdownMenu,
@@ -14,13 +11,10 @@ import PropTypes from "prop-types";
 import DotsLoader from "../Loaders/DotsLoader";
 import InfoModal from "../Modals/InfoModal";
 
-class Auth extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      dropdownOpen: false,
-    };
-  }
+class Auth extends Component {
+  state = {
+    dropdownOpen: false,
+  };
 
   toggle = () => this.setState({ dropdownOpen: !this.state.dropdownOpen });
 
@@ -30,6 +24,39 @@ class Auth extends React.Component {
       this.props.handleGetAvatar(this.props.userId);
     }
   }
+
+  renderNavPanel = () => {
+    const style = {
+      image: { width: "32px", height: "32px" },
+    };
+    return (
+      <Media className="align-middle d-flex h-100">
+        <img
+          alt="avatar"
+          className="avatar rounded-circle align-self-center ml-3"
+          src={this.props.avatar}
+          style={style.image}
+        ></img>
+        <ButtonDropdown
+          isOpen={this.state.dropdownOpen}
+          toggle={this.toggle}
+          className="align-middle justify-content-center align-self-center col"
+        >
+          <Button disabled id="caret" color="light">
+            {this.props.name}
+          </Button>
+          <DropdownToggle split color="light" />
+          <DropdownMenu>
+            <DropdownItem disabled>Действие 1</DropdownItem>
+            <DropdownItem disabled>Действие 2</DropdownItem>
+            <DropdownItem disabled>Действие 3</DropdownItem>
+            <DropdownItem divider />
+            <DropdownItem onClick={this.props.handleLogout}>Выйти</DropdownItem>
+          </DropdownMenu>
+        </ButtonDropdown>
+      </Media>
+    );
+  };
 
   render() {
     if (this.props.error) {
@@ -44,38 +71,8 @@ class Auth extends React.Component {
     }
     if (this.props.isFetching) {
       return <DotsLoader></DotsLoader>;
-    }
-    if (this.props.name) {
-      const style = {
-        image: { width: "32px", height: "32px" },
-      };
-      return (
-        <Media className="align-middle d-flex h-100">
-          <img
-            alt="avatar"
-            className="avatar rounded-circle align-self-center ml-3"
-            src={this.props.avatar}
-            style={style.image}
-          ></img>
-          <ButtonDropdown
-            isOpen={this.state.dropdownOpen}
-            toggle={this.toggle}
-            className="align-middle justify-content-center align-self-center col"
-          >
-            <Button disabled id="caret" color="light">
-              {this.props.name}
-            </Button>
-            <DropdownToggle split color="light" />
-            <DropdownMenu>
-              <DropdownItem disabled>Действие 1</DropdownItem>
-              <DropdownItem disabled>Действие 2</DropdownItem>
-              <DropdownItem disabled>Действие 3</DropdownItem>
-              <DropdownItem divider />
-              <DropdownItem onClick={this.props.handleLogout}>Выйти</DropdownItem>
-            </DropdownMenu>
-          </ButtonDropdown>
-        </Media>
-      );
+    } else if (this.props.name) {
+      return this.renderNavPanel();
     }
     return (
       <Button outline color="light" onClick={this.props.handleLogin}>

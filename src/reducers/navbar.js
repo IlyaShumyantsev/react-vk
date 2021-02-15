@@ -1,4 +1,4 @@
-import { USER_IS_LOGIN, USER_IS_LOGOUT } from "../actions/NavbarActions";
+import { USER_IS_LOGINED, USER_IS_LOGOUT } from "../actions/NavbarActions";
 
 const initialState = {
   isLogin: false,
@@ -11,15 +11,15 @@ const initialState = {
 
 export function navbarReducer(state = initialState, action) {
   switch (action.type) {
-    case USER_IS_LOGIN: {
+    case USER_IS_LOGINED: {
       return {
         ...state,
         isLogin: true,
         title: new Map([
           ["Главная", "/"],
-          ["Стена", "/"],
-          ["Фото", "/"],
-          ["Музыка", "/"],
+          ["Стена", "/wall"],
+          ["Фото", "/photos"],
+          ["Музыка", "/music"],
           ["GitHub", "https://github.com/IlyaShumyantsev/react-vk/tree/develop"],
         ]),
       };

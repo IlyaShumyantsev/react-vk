@@ -1,7 +1,7 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-// import Page from "../components/Page";
 import NavPanel from "../components/NavPanel";
 import NotFound from "../components/Errors/NotFound";
 import { getPhotos } from "../actions/PageActions";
@@ -12,8 +12,6 @@ function App(props) {
   const {
     user,
     navbar,
-    // page,
-    // getPhotosActions,
     handleLoginAction,
     handleLogoutAction,
     handleGetAvatarAction,
@@ -31,15 +29,13 @@ function App(props) {
           handleNavbar={handleNavbarAction}
         />
         <Switch>
+          <Route exact path="/wall" />
+          <Route exact path="/photos" />
+          <Route exact path="/music" />
+          <Route exact path="/github" />
           <Route component={NotFound} />
         </Switch>
       </Router>
-      {/* <Page
-        photos={page.photos}
-        year={page.year}
-        isFetching={page.isFetching}
-        getPhotos={getPhotosActions}
-      /> */}
     </div>
   );
 }
@@ -63,3 +59,12 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
+
+App.propTypes = {
+  user: PropTypes.object.isRequired,
+  navbar: PropTypes.object.isRequired,
+  handleLoginAction: PropTypes.func.isRequired,
+  handleLogoutAction: PropTypes.func.isRequired,
+  handleGetAvatarAction: PropTypes.func.isRequired,
+  handleNavbarAction: PropTypes.func.isRequired,
+};

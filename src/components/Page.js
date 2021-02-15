@@ -9,7 +9,6 @@ const Page = ({ photos, year, isFetching, getPhotos }) => {
 
   return (
     <div className="ib page">
-      {/* Просто тест */}
       <p>
         <button className="btn" onClick={onBtnClick}>
           2021

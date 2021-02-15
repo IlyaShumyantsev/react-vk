@@ -1,23 +1,12 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  // NavItem,
-  NavLink,
-  // UncontrolledDropdown,
-  // DropdownToggle,
-  // DropdownMenu,
-  DropdownItem,
-} from "reactstrap";
+import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, DropdownItem } from "reactstrap";
+import { Link } from "react-router-dom";
 import Auth from "./User/Auth";
 
 const NavPanel = ({ user, navbar, handleLogin, handleLogout, handleGetAvatar, handleNavbar }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const toggle = () => setIsOpen(!isOpen);
+  const [isOpen, setCollapseState] = useState(false);
+  const toggle = () => setCollapseState(!isOpen);
 
   useEffect(() => {
     handleNavbar(user.isLogin);
@@ -34,9 +23,9 @@ const NavPanel = ({ user, navbar, handleLogin, handleLogout, handleGetAvatar, ha
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
             {Object.keys(Object.fromEntries(title)).map((item, i) => (
-              <NavLink key={i} href={Object.fromEntries(title)[item]}>
+              <Link className="nav-link" key={i} to={Object.fromEntries(title)[item]}>
                 {item}
-              </NavLink>
+              </Link>
             ))}
           </Nav>
           <DropdownItem divider />
@@ -61,7 +50,9 @@ export default NavPanel;
 
 NavPanel.propTypes = {
   user: PropTypes.object.isRequired,
+  navbar: PropTypes.object.isRequired,
   handleLogin: PropTypes.func.isRequired,
   handleLogout: PropTypes.func.isRequired,
   handleGetAvatar: PropTypes.func.isRequired,
+  handleNavbar: PropTypes.func.isRequired,
 };
