@@ -10,8 +10,6 @@ export const AVATAR_REQUEST = "AVATAR_REQUEST";
 export const AVATAR_SUCCESS = "AVATAR_SUCCESS";
 export const AVATAR_FAIL = "AVATAR_FAIL";
 
-/* global VK */
-
 export function handleLogin() {
   const [connected, notAuthorized] = ["connected", "not_authorized"];
   return function (dispatch) {
@@ -41,7 +39,7 @@ export function handleLogin() {
 }
 
 export function handleLogout() {
-  const [unknown] = ["unknown"];
+  const unknown = "unknown";
   return function (dispatch) {
     dispatch({
       type: LOGOUT_REQUEST,

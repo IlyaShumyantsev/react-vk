@@ -13,8 +13,8 @@ const NavPanel = ({
   handleGetAvatar,
   handleNavbar,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const toggle = () => setIsOpen(!isOpen);
+  const [isOpen, setCollapseState] = useState(false);
+  const toggle = () => setCollapseState(!isOpen);
 
   useEffect(() => {
     handleNavbar(user.isLogin);
@@ -69,7 +69,10 @@ export default NavPanel;
 
 NavPanel.propTypes = {
   user: PropTypes.object.isRequired,
+  navbar: PropTypes.object.isRequired,
+  getPhotos: PropTypes.func.isRequired,
   handleLogin: PropTypes.func.isRequired,
   handleLogout: PropTypes.func.isRequired,
   handleGetAvatar: PropTypes.func.isRequired,
+  handleNavbar: PropTypes.func.isRequired,
 };

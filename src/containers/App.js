@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Photos from "../components/User/Photos";
@@ -72,3 +73,14 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
+
+App.propTypes = {
+  user: PropTypes.object.isRequired,
+  navbar: PropTypes.object.isRequired,
+  photos: PropTypes.object.isRequired,
+  getPhotosActions: PropTypes.func.isRequired,
+  handleLoginAction: PropTypes.func.isRequired,
+  handleLogoutAction: PropTypes.func.isRequired,
+  handleGetAvatarAction: PropTypes.func.isRequired,
+  handleNavbarAction: PropTypes.func.isRequired,
+};

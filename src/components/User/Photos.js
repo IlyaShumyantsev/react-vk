@@ -44,6 +44,8 @@ export default Photos;
 
 Photos.propTypes = {
   year: PropTypes.number,
+  years: PropTypes.string,
+  error: PropTypes.string.isRequired,
   photos: PropTypes.array.isRequired,
   getPhotos: PropTypes.func.isRequired,
   isFetching: PropTypes.bool.isRequired,
