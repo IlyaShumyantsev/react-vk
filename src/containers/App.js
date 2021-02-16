@@ -36,7 +36,6 @@ function App(props) {
           <Route exact path="/photos">
             <Photos
               photos={photos.photos}
-              year={photos.year}
               years={photos.years}
               isFetching={photos.isFetching}
               error={photos.error}

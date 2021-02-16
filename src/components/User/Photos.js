@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Button, ButtonGroup } from "reactstrap";
-import RippleLoader from "../Loaders/RippleLoader";
+import "photoswipe/dist/photoswipe.css";
+import "photoswipe/dist/default-skin/default-skin.css";
 
-const Photos = ({ photos, year, years, isFetching, error, getPhotos }) => {
+import { Gallery, Item } from "react-photoswipe-gallery";
+import RippleLoader from "../Loaders/RippleLoader";
+import "./Photos.css";
+
+const Photos = ({ photos, years, isFetching, error, getPhotos }) => {
   const [activeButton, setButtonState] = useState(null);
 
   const onBtnClick = (index) => (e) => {
@@ -21,14 +26,53 @@ const Photos = ({ photos, year, years, isFetching, error, getPhotos }) => {
     } else if (isFetching) {
       return <RippleLoader />;
     } else {
-      return photos.map((entry) => (
-        <div key={entry.id} className="m-2 border border-warning p-1">
-          <p>
-            <img src={entry.sizes[0].url} alt="" />
-          </p>
-          <p>{entry.likes.count} ❤</p>
-        </div>
-      ));
+      // return photos.map((entry) => (
+      //   <div key={entry.id} className="m-2 border border-warning p-1  card img_wrapper">
+      //     <img src={entry.sizes[entry.sizes.length - 1].url} alt="" className="card-img" />
+
+      //     <hr></hr>
+      //     <div className="card-body text-center">
+      //       <h4 className="font-weight-bold blue-text">{entry.likes.count} ❤</h4>
+      //     </div>
+      //   </div>
+      // ));
+      const IMAGES = [];
+      photos.map((entry) => {
+        return IMAGES.push({
+          src: entry.sizes[entry.sizes.length - 1].url,
+          thumbnail: entry.sizes[0].url,
+          thumbnailWidth: 320,
+          thumbnailHeight: 212,
+        });
+      });
+      return IMAGES ? (
+        <Gallery>
+          {photos.map((entry, index) => {
+            return (
+              <Item
+                original={entry.sizes[entry.sizes.length - 1].url}
+                thumbnail={entry.sizes[0].url}
+                width={entry.sizes[entry.sizes.length - 1].width}
+                height={entry.sizes[entry.sizes.length - 1].height}
+                key={index}
+              >
+                {({ ref, open }) => {
+                  return (
+                    <img
+                      ref={ref}
+                      onClick={open}
+                      src={entry.sizes[entry.sizes.length - 1].url}
+                      alt=""
+                      className="m-2 border border-warning p-1 card "
+                      height="400px"
+                    />
+                  );
+                }}
+              </Item>
+            );
+          })}
+        </Gallery>
+      ) : null;
     }
   }
 
@@ -54,10 +98,7 @@ const Photos = ({ photos, year, years, isFetching, error, getPhotos }) => {
           </Button>
         ))}
       </ButtonGroup>
-      <div className="row mt-3">
-        <h3>{!year ? <p>Все</p> : <p>{year} год</p>}</h3>
-        {renderTemplate()}
-      </div>
+      <div className="row mt-3 justify-content-center ">{renderTemplate()}</div>
     </div>
   );
 };
@@ -65,7 +106,6 @@ const Photos = ({ photos, year, years, isFetching, error, getPhotos }) => {
 export default Photos;
 
 Photos.propTypes = {
-  year: PropTypes.number,
   years: PropTypes.array.isRequired,
   error: PropTypes.string.isRequired,
   photos: PropTypes.array.isRequired,
