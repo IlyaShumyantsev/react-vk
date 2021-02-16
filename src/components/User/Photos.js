@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Button, ButtonGroup } from "reactstrap";
-import DotsLoader from "../Loaders/DotsLoader";
+import RippleLoader from "../Loaders/RippleLoader";
 
 const Photos = ({ photos, year, years, isFetching, error, getPhotos }) => {
   const [activeButton, setButtonState] = useState(null);
@@ -9,22 +9,17 @@ const Photos = ({ photos, year, years, isFetching, error, getPhotos }) => {
   const onBtnClick = (index) => (e) => {
     const year = +e.currentTarget.innerText;
     isNaN(year) ? getPhotos(null) : getPhotos(year);
-    return () => setButtonState(index);
+    setButtonState(index);
     // console.log(e.currentTarget);
     // e.currentTarget.classList.toggle("active");
     // setButtonsState(e.currentTarget.classList.toggle("active"));
   };
 
-  useEffect(() => {
-    document.title = activeButton;
-    console.log(activeButton);
-  });
-
   function renderTemplate() {
     if (error) {
       return <p>{error}</p>;
     } else if (isFetching) {
-      return <DotsLoader />;
+      return <RippleLoader />;
     } else {
       return photos.map((entry) => (
         <div key={entry.id} className="m-2 border border-warning p-1">

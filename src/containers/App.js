@@ -33,20 +33,16 @@ function App(props) {
           handleNavbar={handleNavbarAction}
         />
         <Switch>
-          <Route
-            exact
-            path="/photos"
-            component={() => (
-              <Photos
-                photos={photos.photos}
-                year={photos.year}
-                years={photos.years}
-                isFetching={photos.isFetching}
-                error={photos.error}
-                getPhotos={getPhotosActions}
-              />
-            )}
-          />
+          <Route exact path="/photos">
+            <Photos
+              photos={photos.photos}
+              year={photos.year}
+              years={photos.years}
+              isFetching={photos.isFetching}
+              error={photos.error}
+              getPhotos={getPhotosActions}
+            />
+          </Route>
           <Route component={NotFound} />
         </Switch>
       </Router>
