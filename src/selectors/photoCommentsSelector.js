@@ -1,7 +1,7 @@
 import { createSelector } from "reselect";
 
-const getPhotoComments = (store) => store.photos.comments.items;
-const getPhotos = (store) => store.photos.photos;
+const getPhotoComments = (photos) => photos.comments.items;
+const getPhotos = (photos) => photos.photos;
 
 export const photoCommentsSelector = createSelector(
   [getPhotoComments, getPhotos],
