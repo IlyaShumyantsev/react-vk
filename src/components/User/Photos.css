@@ -1,23 +1,19 @@
-/* .image-gallery {
-  width: 100%;
-  height: auto;
+.image-container {
+  position: relative;
 }
 
-.image-gallery-swipe {
-  width: 40%;
-  height: auto;
+/* Style the button and place it in the middle of the container/image */
+.image-container .btn {
+  position: absolute;
+  top: 90%;
+  left: 2%;
+  /* transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%); */
+  /* background-color: #555; */
+  /* color: white; */
+  /* font-size: 16px; */
+  /* padding: 12px 24px; */
+  border: none;
+  /* cursor: pointer; */
+  /* border-radius: 5px; */
 }
-
-.image-gallery-slide img {
-  width: 100%;
-  height: auto;
-  max-height: 80vh;
-  object-fit: cover;
-  overflow: hidden;
-  object-position: center center;
-  background-color: black;
-}
-
-.fullscreen .image-gallery-slide img {
-  max-height: 100vh;
-} */

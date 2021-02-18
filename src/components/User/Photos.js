@@ -1,23 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Button, ButtonGroup } from "reactstrap";
 import "photoswipe/dist/photoswipe.css";
 import "photoswipe/dist/default-skin/default-skin.css";
-
 import { Gallery, Item } from "react-photoswipe-gallery";
 import RippleLoader from "../Loaders/RippleLoader";
 import "./Photos.css";
 
+import { photoCommentsSelector } from "../../selectors/photoCommentsSelector";
+import { useSelector } from "react-redux";
+
 const Photos = ({ photos, years, isFetching, error, getPhotos }) => {
   const [activeButton, setButtonState] = useState(null);
+
+  const photosAndComments = useSelector(photoCommentsSelector);
+
+  useEffect(() => {}, [photosAndComments]);
 
   const onBtnClick = (index) => (e) => {
     const year = +e.currentTarget.innerText;
     isNaN(year) ? getPhotos(null) : getPhotos(year);
     setButtonState(index);
-    // console.log(e.currentTarget);
-    // e.currentTarget.classList.toggle("active");
-    // setButtonsState(e.currentTarget.classList.toggle("active"));
   };
 
   function renderTemplate() {
@@ -26,26 +29,7 @@ const Photos = ({ photos, years, isFetching, error, getPhotos }) => {
     } else if (isFetching) {
       return <RippleLoader />;
     } else {
-      // return photos.map((entry) => (
-      //   <div key={entry.id} className="m-2 border border-warning p-1  card img_wrapper">
-      //     <img src={entry.sizes[entry.sizes.length - 1].url} alt="" className="card-img" />
-
-      //     <hr></hr>
-      //     <div className="card-body text-center">
-      //       <h4 className="font-weight-bold blue-text">{entry.likes.count} ❤</h4>
-      //     </div>
-      //   </div>
-      // ));
-      const IMAGES = [];
-      photos.map((entry) => {
-        return IMAGES.push({
-          src: entry.sizes[entry.sizes.length - 1].url,
-          thumbnail: entry.sizes[0].url,
-          thumbnailWidth: 320,
-          thumbnailHeight: 212,
-        });
-      });
-      return IMAGES ? (
+      return photos ? (
         <Gallery>
           {photos.map((entry, index) => {
             return (
@@ -58,14 +42,21 @@ const Photos = ({ photos, years, isFetching, error, getPhotos }) => {
               >
                 {({ ref, open }) => {
                   return (
-                    <img
-                      ref={ref}
-                      onClick={open}
-                      src={entry.sizes[entry.sizes.length - 1].url}
-                      alt=""
-                      className="m-2 border border-warning p-1 card "
-                      height="400px"
-                    />
+                    <div className="image-container">
+                      <img
+                        ref={ref}
+                        onClick={open}
+                        src={entry.sizes[entry.sizes.length - 1].url}
+                        alt=""
+                        className="m-2 border border-warning p-1 card "
+                        height="400px"
+                      />
+                      <div className="btn">
+                        <span className="badge badge-danger">{entry.likes.count} ❤</span>
+                        <span className="badge badge-success ml-1">{entry.reposts.count} ↩</span>
+                        <span className="badge badge-warning ml-1">{entry.reposts.count} ✉</span>
+                      </div>
+                    </div>
                   );
                 }}
               </Item>
