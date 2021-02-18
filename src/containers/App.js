@@ -9,6 +9,8 @@ import { getPhotos } from "../actions/PhotosActions";
 import { handleLogin, handleLogout, getAvatar } from "../actions/UserActions";
 import { handleNavbar } from "../actions/NavbarActions";
 
+import { photoCommentsSelector } from "../selectors/photoCommentsSelector";
+
 function App(props) {
   const {
     user,
@@ -19,6 +21,7 @@ function App(props) {
     handleLogoutAction,
     handleGetAvatarAction,
     handleNavbarAction,
+    photosAndComments,
   } = props;
   return (
     <div className="app">
@@ -40,6 +43,7 @@ function App(props) {
               isFetching={photos.isFetching}
               error={photos.error}
               getPhotos={getPhotosActions}
+              photosAndComments={photosAndComments}
             />
           </Route>
           <Route component={NotFound} />
@@ -54,6 +58,7 @@ const mapStateToProps = (store) => {
     user: store.user,
     photos: store.photos,
     navbar: store.navbar,
+    photosAndComments: photoCommentsSelector(store.photos),
   };
 };
 
@@ -78,4 +83,5 @@ App.propTypes = {
   handleLogoutAction: PropTypes.func.isRequired,
   handleGetAvatarAction: PropTypes.func.isRequired,
   handleNavbarAction: PropTypes.func.isRequired,
+  photosAndComments: PropTypes.object.isRequired,
 };

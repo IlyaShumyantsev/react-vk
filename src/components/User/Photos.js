@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Button, ButtonGroup } from "reactstrap";
 import "photoswipe/dist/photoswipe.css";
@@ -7,20 +7,14 @@ import { Gallery, Item } from "react-photoswipe-gallery";
 import RippleLoader from "../Loaders/RippleLoader";
 import "./Photos.css";
 
-import { photoCommentsSelector } from "../../selectors/photoCommentsSelector";
-import { useSelector } from "react-redux";
-
-const Photos = ({ photos, years, isFetching, error, getPhotos }) => {
+const Photos = ({ photos, years, isFetching, error, getPhotos, photosAndComments }) => {
   const [activeButton, setButtonState] = useState(null);
-
-  const photosAndComments = useSelector(photoCommentsSelector);
-
-  useEffect(() => {}, [photosAndComments]);
 
   const onBtnClick = (index) => (e) => {
     const year = +e.currentTarget.innerText;
     isNaN(year) ? getPhotos(null) : getPhotos(year);
     setButtonState(index);
+    console.log(photosAndComments);
   };
 
   function renderTemplate() {
@@ -102,4 +96,5 @@ Photos.propTypes = {
   photos: PropTypes.array.isRequired,
   getPhotos: PropTypes.func.isRequired,
   isFetching: PropTypes.bool.isRequired,
+  photosAndComments: PropTypes.object.isRequired,
 };
