@@ -96,5 +96,5 @@ Photos.propTypes = {
   photos: PropTypes.array.isRequired,
   getPhotos: PropTypes.func.isRequired,
   isFetching: PropTypes.bool.isRequired,
-  photosAndComments: PropTypes.object.isRequired,
+  photosAndComments: PropTypes.array.isRequired,
 };

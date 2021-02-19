@@ -83,5 +83,5 @@ App.propTypes = {
   handleLogoutAction: PropTypes.func.isRequired,
   handleGetAvatarAction: PropTypes.func.isRequired,
   handleNavbarAction: PropTypes.func.isRequired,
-  photosAndComments: PropTypes.object.isRequired,
+  photosAndComments: PropTypes.array.isRequired,
 };
