@@ -5,16 +5,24 @@ import "photoswipe/dist/photoswipe.css";
 import "photoswipe/dist/default-skin/default-skin.css";
 import { Gallery, Item } from "react-photoswipe-gallery";
 import RippleLoader from "../Loaders/RippleLoader";
+import CommetnsModal from "../Modals/CommentsModal";
 import "./Photos.css";
 
-const Photos = ({ photos, years, isFetching, error, getPhotos, photosAndComments }) => {
+const Photos = ({
+  years,
+  isFetching,
+  error,
+  getPhotos,
+  photosAndComments,
+  handleCommentsModal,
+  modal,
+}) => {
   const [activeButton, setButtonState] = useState(null);
 
   const onBtnClick = (index) => (e) => {
     const year = +e.currentTarget.innerText;
     isNaN(year) ? getPhotos(null) : getPhotos(year);
     setButtonState(index);
-    console.log(photosAndComments);
   };
 
   function renderTemplate() {
@@ -23,15 +31,18 @@ const Photos = ({ photos, years, isFetching, error, getPhotos, photosAndComments
     } else if (isFetching) {
       return <RippleLoader />;
     } else {
-      return photos ? (
+      return photosAndComments ? (
         <Gallery>
-          {photos.map((entry, index) => {
+          {modal.isOpen && (
+            <CommetnsModal modal={modal} handleCommentsModal={handleCommentsModal} />
+          )}
+          {photosAndComments.map((entry, index) => {
             return (
               <Item
-                original={entry.sizes[entry.sizes.length - 1].url}
-                thumbnail={entry.sizes[0].url}
-                width={entry.sizes[entry.sizes.length - 1].width}
-                height={entry.sizes[entry.sizes.length - 1].height}
+                original={entry.photo.sizes[entry.photo.sizes.length - 1].url}
+                thumbnail={entry.photo.sizes[0].url}
+                width={entry.photo.sizes[entry.photo.sizes.length - 1].width}
+                height={entry.photo.sizes[entry.photo.sizes.length - 1].height}
                 key={index}
               >
                 {({ ref, open }) => {
@@ -40,15 +51,28 @@ const Photos = ({ photos, years, isFetching, error, getPhotos, photosAndComments
                       <img
                         ref={ref}
                         onClick={open}
-                        src={entry.sizes[entry.sizes.length - 1].url}
+                        src={entry.photo.sizes[entry.photo.sizes.length - 1].url}
                         alt=""
                         className="m-2 border border-warning p-1 card "
                         height="400px"
                       />
                       <div className="btn">
-                        <span className="badge badge-danger">{entry.likes.count} ❤</span>
-                        <span className="badge badge-success ml-1">{entry.reposts.count} ↩</span>
-                        <span className="badge badge-warning ml-1">{entry.reposts.count} ✉</span>
+                        <span className="badge badge-danger">{entry.photo.likes.count} ❤</span>
+                        <span className="badge badge-success ml-1">
+                          {entry.photo.reposts.count} ↩
+                        </span>
+                        {entry.comments.length ? (
+                          <button
+                            className="btn btn-warning badge badge-warning ml-1"
+                            onClick={() => handleCommentsModal(!modal.isOpen, entry.comments)}
+                          >
+                            {entry.comments.length} ✉
+                          </button>
+                        ) : (
+                          <span className="badge badge-warning ml-1">
+                            {entry.comments.length} ✉
+                          </span>
+                        )}
                       </div>
                     </div>
                   );
@@ -62,7 +86,7 @@ const Photos = ({ photos, years, isFetching, error, getPhotos, photosAndComments
   }
 
   return (
-    <div className="">
+    <div>
       <ButtonGroup className="mt-1 col-12">
         <Button
           color="warning"
@@ -93,8 +117,9 @@ export default Photos;
 Photos.propTypes = {
   years: PropTypes.array.isRequired,
   error: PropTypes.string.isRequired,
-  photos: PropTypes.array.isRequired,
   getPhotos: PropTypes.func.isRequired,
   isFetching: PropTypes.bool.isRequired,
   photosAndComments: PropTypes.array.isRequired,
+  handleCommentsModal: PropTypes.func.isRequired,
+  modal: PropTypes.object.isRequired,
 };

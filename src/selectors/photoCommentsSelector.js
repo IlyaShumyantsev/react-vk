@@ -7,11 +7,10 @@ export const photoCommentsSelector = createSelector(
   [getPhotoComments, getPhotos],
   (allComments, allPhotos) => {
     const photosAndComments = [];
-    allPhotos.forEach((photo) => {
-      let comments = allComments.filter((comment) => comment.pid === photo.id) || {};
+    allPhotos?.forEach((photo) => {
+      let comments = allComments?.filter((comment) => comment.pid === photo.id) || {};
       photosAndComments.push({ photo, comments });
     });
-    console.log(photosAndComments);
     return photosAndComments;
   }
 );

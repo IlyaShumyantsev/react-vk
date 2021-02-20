@@ -8,7 +8,7 @@ import NotFound from "../components/Errors/NotFound";
 import { getPhotos } from "../actions/PhotosActions";
 import { handleLogin, handleLogout, getAvatar } from "../actions/UserActions";
 import { handleNavbar } from "../actions/NavbarActions";
-
+import { handleCommentsModal } from "../actions/ModalActions";
 import { photoCommentsSelector } from "../selectors/photoCommentsSelector";
 
 function App(props) {
@@ -16,12 +16,14 @@ function App(props) {
     user,
     navbar,
     photos,
+    modal,
     getPhotosActions,
     handleLoginAction,
     handleLogoutAction,
     handleGetAvatarAction,
     handleNavbarAction,
     photosAndComments,
+    handleCommentsModalAction,
   } = props;
   return (
     <div className="app">
@@ -38,12 +40,13 @@ function App(props) {
         <Switch>
           <Route exact path="/photos">
             <Photos
-              photos={photos.photos}
               years={photos.years}
               isFetching={photos.isFetching}
               error={photos.error}
               getPhotos={getPhotosActions}
               photosAndComments={photosAndComments}
+              handleCommentsModal={handleCommentsModalAction}
+              modal={modal}
             />
           </Route>
           <Route component={NotFound} />
@@ -54,11 +57,14 @@ function App(props) {
 }
 
 const mapStateToProps = (store) => {
+  // console.log(" store.year - ", store.photos.year);
+  // console.log("store.years- ", store.photos.years);
   return {
     user: store.user,
     photos: store.photos,
     navbar: store.navbar,
     photosAndComments: photoCommentsSelector(store.photos),
+    modal: store.modal,
   };
 };
 
@@ -69,6 +75,9 @@ const mapDispatchToProps = (dispatch) => {
     handleLogoutAction: () => dispatch(handleLogout()),
     handleGetAvatarAction: (userId) => dispatch(getAvatar(userId)),
     handleNavbarAction: (isLogin) => dispatch(handleNavbar(isLogin)),
+    handleCommentsModalAction: (isOpen, comments) => {
+      return dispatch(handleCommentsModal(isOpen, comments));
+    },
   };
 };
 
@@ -78,10 +87,12 @@ App.propTypes = {
   user: PropTypes.object.isRequired,
   navbar: PropTypes.object.isRequired,
   photos: PropTypes.object.isRequired,
+  modal: PropTypes.object.isRequired,
   getPhotosActions: PropTypes.func.isRequired,
   handleLoginAction: PropTypes.func.isRequired,
   handleLogoutAction: PropTypes.func.isRequired,
   handleGetAvatarAction: PropTypes.func.isRequired,
   handleNavbarAction: PropTypes.func.isRequired,
+  handleCommentsModalAction: PropTypes.func.isRequired,
   photosAndComments: PropTypes.array.isRequired,
 };
