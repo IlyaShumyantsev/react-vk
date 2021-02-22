@@ -9,8 +9,8 @@ const CommetnsModal = ({ modal, handleCommentsModal }) => {
     <div>
       <Modal isOpen={modal.isOpen} toggle={onToggle}>
         <ModalHeader toggle={onToggle}>Комментарии к фото</ModalHeader>
-        {modal?.comments?.map((comment) => (
-          <ModalBody>{comment?.text}</ModalBody>
+        {modal?.comments?.map((comment, index) => (
+          <ModalBody key={index}>{comment?.text}</ModalBody>
         ))}
         <ModalFooter>
           <Button color="danger" onClick={onToggle}>

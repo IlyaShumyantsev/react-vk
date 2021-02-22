@@ -90,3 +90,17 @@ export function getAvatar(userId) {
     );
   };
 }
+
+export default function getUser(...userIds) {
+  console.log(userIds);
+  VK.api(
+    "users.get",
+    {
+      user_ids: userIds.join(","),
+      fields: "photo_50",
+    },
+    (r) => {
+      console.log(r.response);
+    }
+  );
+}
