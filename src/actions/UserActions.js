@@ -10,20 +10,24 @@ export const AVATAR_REQUEST = "AVATAR_REQUEST";
 export const AVATAR_SUCCESS = "AVATAR_SUCCESS";
 export const AVATAR_FAIL = "AVATAR_FAIL";
 
+export const GET_USERS_REQUEST = "GET_USERS_REQUEST";
+export const GET_USERS_SUCCESS = "GET_USERS_SUCCESS";
+export const GET_USERS_FAIL = "GET_USERS_FAIL";
+
 export function handleLogin() {
   const [connected, notAuthorized] = ["connected", "not_authorized"];
   return function (dispatch) {
     dispatch({
       type: LOGIN_REQUEST,
     });
-    VK.Auth.login((response) => {
-      if (response.status === connected && response.session) {
+    VK.Auth.login((data) => {
+      if (data.status === connected && data.session) {
         dispatch({
           type: LOGIN_SUCCESS,
-          userId: response.session.mid,
-          payload: response.session.user.first_name,
+          userId: data.session.mid,
+          payload: data.session.user.first_name,
         });
-      } else if (response.status === notAuthorized) {
+      } else if (data.status === notAuthorized) {
         dispatch({
           type: LOGIN_FAIL,
           payload: new Error("Доступ к приложению запрещен"),
@@ -44,11 +48,11 @@ export function handleLogout() {
     dispatch({
       type: LOGOUT_REQUEST,
     });
-    VK.Auth.logout((response) => {
-      if (response.status === unknown) {
+    VK.Auth.logout((data) => {
+      if (data.status === unknown) {
         dispatch({
           type: LOGOUT_SUCCESS,
-          payload: response.status,
+          payload: data.status,
           avatar: "",
         });
       } else {
@@ -74,11 +78,11 @@ export function getAvatar(userId) {
         name_case: "nom",
         v: 5.62,
       },
-      (response) => {
-        if (!response.error) {
+      (data) => {
+        if (!data.error) {
           dispatch({
             type: AVATAR_SUCCESS,
-            payload: response.response[0].photo_100,
+            payload: data.response[0].photo_100,
           });
         } else {
           dispatch({
@@ -91,16 +95,27 @@ export function getAvatar(userId) {
   };
 }
 
-export default function getUser(...userIds) {
-  console.log(userIds);
-  VK.api(
-    "users.get",
-    {
-      user_ids: userIds.join(","),
-      fields: "photo_50",
-    },
-    (r) => {
-      console.log(r.response);
-    }
-  );
+export function getUsers(userIds) {
+  return function (dispatch) {
+    dispatch({ type: GET_USERS_REQUEST });
+    VK.api(
+      "users.get",
+      {
+        user_ids: userIds,
+        name_case: "Nom",
+        v: "5.130",
+        fields: "photo_50",
+      },
+      (data) => {
+        if (!data.response) {
+          dispatch({
+            type: GET_USERS_FAIL,
+            payload: new Error("Таких пользователей не существует!"),
+          });
+        } else {
+          dispatch({ type: GET_USERS_SUCCESS, payload: data.response });
+        }
+      }
+    );
+  };
 }

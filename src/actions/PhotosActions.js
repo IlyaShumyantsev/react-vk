@@ -1,5 +1,3 @@
-import getUser from "./UserActions";
-
 export const GET_PHOTOS_REQUEST = "GET_PHOTOS_REQUEST";
 export const GET_PHOTOS_SUCCESS = "GET_PHOTOS_SUCCESS";
 export const GET_PHOTOS_FAIL = "GET_PHOTOS_FAIL";
@@ -82,9 +80,7 @@ function getPhotoComments(dispatch) {
         dispatch({
           type: GET_PHOTO_COMMENTS_SUCCESS,
           payload: r.response,
-          commentators: [...new Set(r.response.items?.map((item) => item.from_id))],
         });
-        getUser([...new Set(r.response.items?.map((item) => item.from_id))]);
       } else {
         dispatch({
           type: GET_PHOTO_COMMENTS_FAIL,

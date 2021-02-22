@@ -12,7 +12,6 @@ const initialState = {
   years: [],
   photos: [],
   comments: [],
-  commentators: [],
   isFetching: false,
   error: "",
 };
@@ -60,7 +59,6 @@ export function photosReducer(state = initialState, action) {
         ...state,
         isFetching: false,
         comments: action.payload,
-        commentators: action.commentators,
         error: "",
       };
     }

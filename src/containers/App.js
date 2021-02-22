@@ -6,7 +6,7 @@ import Photos from "../components/User/Photos";
 import NavPanel from "../components/NavPanel";
 import NotFound from "../components/Errors/NotFound";
 import { getPhotos } from "../actions/PhotosActions";
-import { handleLogin, handleLogout, getAvatar } from "../actions/UserActions";
+import { handleLogin, handleLogout, getAvatar, getUsers } from "../actions/UserActions";
 import { handleNavbar } from "../actions/NavbarActions";
 import { handleCommentsModal } from "../actions/ModalActions";
 import { photoCommentsSelector } from "../selectors/photoCommentsSelector";
@@ -24,6 +24,7 @@ function App(props) {
     handleNavbarAction,
     photosAndComments,
     handleCommentsModalAction,
+    getUsersAction,
   } = props;
   return (
     <div className="app">
@@ -46,7 +47,9 @@ function App(props) {
               getPhotos={getPhotosActions}
               photosAndComments={photosAndComments}
               handleCommentsModal={handleCommentsModalAction}
+              getUsers={getUsersAction}
               modal={modal}
+              photos={photos}
             />
           </Route>
           <Route component={NotFound} />
@@ -57,13 +60,11 @@ function App(props) {
 }
 
 const mapStateToProps = (store) => {
-  // console.log(" store.year - ", store.photos.year);
-  // console.log("store.years- ", store.photos.years);
   return {
     user: store.user,
     photos: store.photos,
     navbar: store.navbar,
-    photosAndComments: photoCommentsSelector(store.photos),
+    photosAndComments: photoCommentsSelector(store.photos, store.user),
     modal: store.modal,
   };
 };
@@ -78,6 +79,7 @@ const mapDispatchToProps = (dispatch) => {
     handleCommentsModalAction: (isOpen, comments) => {
       return dispatch(handleCommentsModal(isOpen, comments));
     },
+    getUsersAction: (usersIds) => dispatch(getUsers(usersIds)),
   };
 };
 
@@ -95,4 +97,5 @@ App.propTypes = {
   handleNavbarAction: PropTypes.func.isRequired,
   handleCommentsModalAction: PropTypes.func.isRequired,
   photosAndComments: PropTypes.array.isRequired,
+  getUsersAction: PropTypes.func.isRequired,
 };

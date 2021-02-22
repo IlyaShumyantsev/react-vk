@@ -8,6 +8,9 @@ import {
   AVATAR_REQUEST,
   AVATAR_SUCCESS,
   AVATAR_FAIL,
+  GET_USERS_REQUEST,
+  GET_USERS_SUCCESS,
+  GET_USERS_FAIL,
 } from "../actions/UserActions";
 
 const initialState = {
@@ -18,6 +21,7 @@ const initialState = {
   avatarIsLoaded: false,
   isFetching: false,
   isLogin: false,
+  users: [],
 };
 
 export function userReducer(state = initialState, action) {
@@ -83,6 +87,29 @@ export function userReducer(state = initialState, action) {
         isFetching: false,
         error: action.payload.message,
         avatarIsLoaded: false,
+      };
+    }
+    case GET_USERS_REQUEST: {
+      return {
+        ...state,
+        isFetching: true,
+        error: "",
+      };
+    }
+    case GET_USERS_SUCCESS: {
+      return {
+        ...state,
+        isFetching: false,
+        error: "",
+        users: action.payload,
+      };
+    }
+    case GET_USERS_FAIL: {
+      return {
+        ...state,
+        isFetching: false,
+        error: action.payload,
+        users: [],
       };
     }
     default: {

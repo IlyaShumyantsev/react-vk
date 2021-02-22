@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Button, ButtonGroup } from "reactstrap";
 import "photoswipe/dist/photoswipe.css";
@@ -16,6 +16,8 @@ const Photos = ({
   photosAndComments,
   handleCommentsModal,
   modal,
+  getUsers,
+  photos,
 }) => {
   const [activeButton, setButtonState] = useState(null);
 
@@ -24,6 +26,10 @@ const Photos = ({
     isNaN(year) ? getPhotos(null) : getPhotos(year);
     setButtonState(index);
   };
+
+  useEffect(() => {
+    getUsers([...new Set(photos.comments.items?.map((item) => item.from_id))]);
+  }, [getUsers, photos.comments.items]);
 
   function renderTemplate() {
     if (error) {
@@ -122,4 +128,6 @@ Photos.propTypes = {
   photosAndComments: PropTypes.array.isRequired,
   handleCommentsModal: PropTypes.func.isRequired,
   modal: PropTypes.object.isRequired,
+  getUsers: PropTypes.func.isRequired,
+  photos: PropTypes.object.isRequired,
 };
