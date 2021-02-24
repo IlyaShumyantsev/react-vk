@@ -48,7 +48,8 @@ const NavPanel = ({
               className="nav-link"
               onClick={() => getPhotos(null)}
               key={i}
-              to={Object.fromEntries(title)[item]}>
+              to={Object.fromEntries(title)[item]}
+            >
               {item}
             </Link>
           );
@@ -66,7 +67,9 @@ const NavPanel = ({
               className="nav-link"
               target={"_blank"}
               key={i}
-              onClick={() => window.open(Object.fromEntries(title)[item])}>
+              to={""}
+              onClick={() => window.open(Object.fromEntries(title)[item])}
+            >
               {item}
             </Link>
           );
@@ -97,7 +100,8 @@ const NavPanel = ({
             avatar={avatar}
             handleLogin={handleLogin}
             handleLogout={handleLogout}
-            handleGetAvatar={handleGetAvatar}></Auth>
+            handleGetAvatar={handleGetAvatar}
+          ></Auth>
         </Collapse>
       </Navbar>
     </div>
