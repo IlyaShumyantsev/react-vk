@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Photos from "../components/User/Photos";
 import NavPanel from "../components/NavPanel";
+import Main from "../components/Main/Main";
 import NotFound from "../components/Errors/NotFound";
 import ErrorBoundary from "../components/Errors/ErrorBoundary";
 import { getPhotos } from "../actions/PhotosActions";
@@ -53,6 +54,9 @@ function App(props) {
                 modal={modal}
                 photos={photos}
               />
+            </Route>
+            <Route exact path="/">
+              <Main />
             </Route>
             <Route component={NotFound} />
           </Switch>
