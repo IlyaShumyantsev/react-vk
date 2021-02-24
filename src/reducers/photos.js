@@ -28,8 +28,6 @@ export function photosReducer(state = initialState, action) {
       };
     }
     case GET_PHOTOS_SUCCESS: {
-      console.log("state.photos - ", state);
-      console.log("action.payload - ", action.payload);
       return {
         ...state,
         photos: action.payload,

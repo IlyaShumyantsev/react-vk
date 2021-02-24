@@ -22,6 +22,7 @@ const initialState = {
   isFetching: false,
   isLogin: false,
   users: [],
+  isFetchingUsers: false,
 };
 
 export function userReducer(state = initialState, action) {
@@ -92,14 +93,14 @@ export function userReducer(state = initialState, action) {
     case GET_USERS_REQUEST: {
       return {
         ...state,
-        isFetching: true,
+        isFetchingUsers: true,
         error: "",
       };
     }
     case GET_USERS_SUCCESS: {
       return {
         ...state,
-        isFetching: false,
+        isFetchingUsers: false,
         error: "",
         users: action.payload,
       };
@@ -107,7 +108,7 @@ export function userReducer(state = initialState, action) {
     case GET_USERS_FAIL: {
       return {
         ...state,
-        isFetching: false,
+        isFetchingUsers: false,
         error: action.payload,
         users: [],
       };

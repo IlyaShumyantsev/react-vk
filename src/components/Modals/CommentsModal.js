@@ -17,7 +17,7 @@ const CommetnsModal = ({ modal, handleCommentsModal }) => {
           <div className="media border p-3">
             <img
               src={comment.user[0].photo_50}
-              alt="John Doe"
+              alt=""
               className="mr-3 mt-3 rounded-circle"
               style={style.image}
             />

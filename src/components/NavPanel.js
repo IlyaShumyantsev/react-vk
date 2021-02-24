@@ -23,6 +23,61 @@ const NavPanel = ({
   const { name, error, isFetching, userId, avatarIsLoaded, avatar } = user;
   const { title } = navbar;
 
+  function navElementsRender() {
+    let [main, wall, photos, music, git] = ["Главная", "Стена", "Фото", "Музыка", "GitHub"];
+
+    return Object.keys(Object.fromEntries(title)).map((item, i) => {
+      switch (item) {
+        case main: {
+          return (
+            <Link className="nav-link" key={i} to={Object.fromEntries(title)[item]}>
+              {item}
+            </Link>
+          );
+        }
+        case wall: {
+          return (
+            <Link className="nav-link" key={i} to={Object.fromEntries(title)[item]}>
+              {item}
+            </Link>
+          );
+        }
+        case photos: {
+          return (
+            <Link
+              className="nav-link"
+              onClick={() => getPhotos(null)}
+              key={i}
+              to={Object.fromEntries(title)[item]}>
+              {item}
+            </Link>
+          );
+        }
+        case music: {
+          return (
+            <Link className="nav-link" key={i} to={Object.fromEntries(title)[item]}>
+              {item}
+            </Link>
+          );
+        }
+        case git: {
+          return (
+            <Link
+              className="nav-link"
+              target={"_blank"}
+              key={i}
+              onClick={() => window.open(Object.fromEntries(title)[item])}>
+              {item}
+            </Link>
+          );
+        }
+        default: {
+          return null;
+        }
+      }
+    });
+  }
+
   return (
     <div>
       <Navbar color="warning" light expand="md">
@@ -30,22 +85,7 @@ const NavPanel = ({
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
-            {Object.keys(Object.fromEntries(title)).map((item, i) => {
-              return Object.fromEntries(title)[item] === "/photos" ? (
-                <Link
-                  className="nav-link"
-                  onClick={() => getPhotos(null)}
-                  key={i}
-                  to={Object.fromEntries(title)[item]}
-                >
-                  {item}
-                </Link>
-              ) : (
-                <Link className="nav-link" key={i} to={Object.fromEntries(title)[item]}>
-                  {item}
-                </Link>
-              );
-            })}
+            {navElementsRender()}
           </Nav>
           <DropdownItem divider />
           <Auth
@@ -57,8 +97,7 @@ const NavPanel = ({
             avatar={avatar}
             handleLogin={handleLogin}
             handleLogout={handleLogout}
-            handleGetAvatar={handleGetAvatar}
-          ></Auth>
+            handleGetAvatar={handleGetAvatar}></Auth>
         </Collapse>
       </Navbar>
     </div>

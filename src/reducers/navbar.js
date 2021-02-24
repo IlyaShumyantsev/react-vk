@@ -27,7 +27,7 @@ export function navbarReducer(state = initialState, action) {
     case USER_IS_LOGOUT: {
       return {
         ...state,
-        isLogin: true,
+        isLogin: false,
         title: new Map([
           ["Главная", "/"],
           ["GitHub", "https://github.com/IlyaShumyantsev/react-vk/tree/develop"],

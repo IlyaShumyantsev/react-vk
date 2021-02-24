@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import { Button, ButtonGroup } from "reactstrap";
 import "photoswipe/dist/photoswipe.css";
@@ -6,11 +6,13 @@ import "photoswipe/dist/default-skin/default-skin.css";
 import { Gallery, Item } from "react-photoswipe-gallery";
 import RippleLoader from "../Loaders/RippleLoader";
 import CommetnsModal from "../Modals/CommentsModal";
+import FacebookLoader from "../Loaders/FacebookLoader";
 import "./Photos.css";
+import { debounce } from "lodash";
 
 const Photos = ({
   years,
-  isFetching,
+  isFetchingPhoto,
   error,
   getPhotos,
   photosAndComments,
@@ -23,9 +25,12 @@ const Photos = ({
 
   const onBtnClick = (index) => (e) => {
     const year = +e.currentTarget.innerText;
-    isNaN(year) ? getPhotos(null) : getPhotos(year);
+    isNaN(year) ? getPhotoDebounce(null) : getPhotoDebounce(year);
     setButtonState(index);
   };
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const getPhotoDebounce = useCallback(debounce(getPhotos, 300), []);
 
   useEffect(() => {
     getUsers([...new Set(photos.comments.items?.map((item) => item.from_id))]);
@@ -34,7 +39,7 @@ const Photos = ({
   function renderTemplate() {
     if (error) {
       return <p>{error}</p>;
-    } else if (isFetching) {
+    } else if (isFetchingPhoto) {
       return <RippleLoader />;
     } else {
       return photosAndComments ? (
@@ -49,8 +54,7 @@ const Photos = ({
                 thumbnail={entry.photo.sizes[0].url}
                 width={entry.photo.sizes[entry.photo.sizes.length - 1].width}
                 height={entry.photo.sizes[entry.photo.sizes.length - 1].height}
-                key={index}
-              >
+                key={index}>
                 {({ ref, open }) => {
                   return (
                     <div className="image-container">
@@ -70,8 +74,7 @@ const Photos = ({
                         {entry.comments.length ? (
                           <button
                             className="btn btn-warning badge badge-warning ml-1"
-                            onClick={() => handleCommentsModal(!modal.isOpen, entry.comments)}
-                          >
+                            onClick={() => handleCommentsModal(!modal.isOpen, entry.comments)}>
                             {entry.comments.length} ✉
                           </button>
                         ) : (
@@ -91,14 +94,17 @@ const Photos = ({
     }
   }
 
-  return (
+  return isFetchingPhoto ? (
+    <div className="row mt-3 justify-content-center ">
+      <FacebookLoader />
+    </div>
+  ) : (
     <div>
       <ButtonGroup className="mt-1 col-12">
         <Button
           color="warning"
           className={`btn ${activeButton === null ? "active" : ""}`}
-          onClick={onBtnClick(null)}
-        >
+          onClick={onBtnClick(null)}>
           Все
         </Button>
         {years.map((item, index) => (
@@ -107,8 +113,7 @@ const Photos = ({
             className={`btn ${activeButton === index ? "active" : ""}`}
             onClick={onBtnClick(index)}
             key={index}
-            id={index}
-          >
+            id={index}>
             {item}
           </Button>
         ))}
@@ -124,7 +129,7 @@ Photos.propTypes = {
   years: PropTypes.array.isRequired,
   error: PropTypes.string.isRequired,
   getPhotos: PropTypes.func.isRequired,
-  isFetching: PropTypes.bool.isRequired,
+  isFetchingPhoto: PropTypes.bool.isRequired,
   photosAndComments: PropTypes.array.isRequired,
   handleCommentsModal: PropTypes.func.isRequired,
   modal: PropTypes.object.isRequired,

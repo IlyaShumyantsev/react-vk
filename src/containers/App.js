@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Photos from "../components/User/Photos";
 import NavPanel from "../components/NavPanel";
 import NotFound from "../components/Errors/NotFound";
+import ErrorBoundary from "../components/Errors/ErrorBoundary";
 import { getPhotos } from "../actions/PhotosActions";
 import { handleLogin, handleLogout, getAvatar, getUsers } from "../actions/UserActions";
 import { handleNavbar } from "../actions/NavbarActions";
@@ -27,35 +28,37 @@ function App(props) {
     getUsersAction,
   } = props;
   return (
-    <div className="app">
-      <Router>
-        <NavPanel
-          user={user}
-          navbar={navbar}
-          getPhotos={getPhotosActions}
-          handleLogin={handleLoginAction}
-          handleLogout={handleLogoutAction}
-          handleGetAvatar={handleGetAvatarAction}
-          handleNavbar={handleNavbarAction}
-        />
-        <Switch>
-          <Route exact path="/photos">
-            <Photos
-              years={photos.years}
-              isFetching={photos.isFetching}
-              error={photos.error}
-              getPhotos={getPhotosActions}
-              photosAndComments={photosAndComments}
-              handleCommentsModal={handleCommentsModalAction}
-              getUsers={getUsersAction}
-              modal={modal}
-              photos={photos}
-            />
-          </Route>
-          <Route component={NotFound} />
-        </Switch>
-      </Router>
-    </div>
+    <ErrorBoundary>
+      <div className="app">
+        <Router>
+          <NavPanel
+            user={user}
+            navbar={navbar}
+            getPhotos={getPhotosActions}
+            handleLogin={handleLoginAction}
+            handleLogout={handleLogoutAction}
+            handleGetAvatar={handleGetAvatarAction}
+            handleNavbar={handleNavbarAction}
+          />
+          <Switch>
+            <Route exact path="/photos">
+              <Photos
+                years={photos.years}
+                isFetchingPhoto={photos.isFetching}
+                error={photos.error}
+                getPhotos={getPhotosActions}
+                photosAndComments={photosAndComments}
+                handleCommentsModal={handleCommentsModalAction}
+                getUsers={getUsersAction}
+                modal={modal}
+                photos={photos}
+              />
+            </Route>
+            <Route component={NotFound} />
+          </Switch>
+        </Router>
+      </div>
+    </ErrorBoundary>
   );
 }
 
