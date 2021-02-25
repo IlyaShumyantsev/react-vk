@@ -34,7 +34,10 @@ const Photos = ({
 
   useEffect(() => {
     getUsers([...new Set(photos.comments.items?.map((item) => item.from_id))]);
-  }, [getUsers, photos.comments.items]);
+    photos.years.indexOf(photos.year) !== -1
+      ? setButtonState(photos.years.indexOf(photos.year))
+      : setButtonState(null);
+  }, [getUsers, photos.comments.items, photos.year, photos.years]);
 
   function renderTemplate() {
     if (error) {
@@ -54,7 +57,8 @@ const Photos = ({
                 thumbnail={entry.photo.sizes[0].url}
                 width={entry.photo.sizes[entry.photo.sizes.length - 1].width}
                 height={entry.photo.sizes[entry.photo.sizes.length - 1].height}
-                key={index}>
+                key={index}
+              >
                 {({ ref, open }) => {
                   return (
                     <div className="image-container">
@@ -74,7 +78,8 @@ const Photos = ({
                         {entry.comments.length ? (
                           <button
                             className="btn btn-warning badge badge-warning ml-1"
-                            onClick={() => handleCommentsModal(!modal.isOpen, entry.comments)}>
+                            onClick={() => handleCommentsModal(!modal.isOpen, entry.comments)}
+                          >
                             {entry.comments.length} ✉
                           </button>
                         ) : (
@@ -104,7 +109,8 @@ const Photos = ({
         <Button
           color="warning"
           className={`btn ${activeButton === null ? "active" : ""}`}
-          onClick={onBtnClick(null)}>
+          onClick={onBtnClick(null)}
+        >
           Все
         </Button>
         {years.map((item, index) => (
@@ -113,7 +119,7 @@ const Photos = ({
             className={`btn ${activeButton === index ? "active" : ""}`}
             onClick={onBtnClick(index)}
             key={index}
-            id={index}>
+          >
             {item}
           </Button>
         ))}

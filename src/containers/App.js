@@ -28,6 +28,7 @@ function App(props) {
     handleCommentsModalAction,
     getUsersAction,
   } = props;
+
   return (
     <ErrorBoundary>
       <div className="app">

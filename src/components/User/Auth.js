@@ -29,17 +29,20 @@ class Auth extends Component {
     const style = {
       image: { width: "32px", height: "32px" },
     };
+
     return (
       <Media className="align-middle d-flex h-100">
         <img
           alt="avatar"
           className="avatar rounded-circle align-self-center ml-3"
           src={this.props.avatar}
-          style={style.image}></img>
+          style={style.image}
+        ></img>
         <ButtonDropdown
           isOpen={this.state.dropdownOpen}
           toggle={this.toggle}
-          className="align-middle justify-content-center align-self-center col">
+          className="align-middle justify-content-center align-self-center col"
+        >
           <Button disabled id="caret" color="light">
             {this.props.name}
           </Button>
