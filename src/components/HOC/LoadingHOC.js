@@ -1,19 +1,29 @@
 import React, { Component } from "react";
+import { DOTS_LOADER } from "../../constants/loadersConstants";
+import { FACEBOOK_LOADER } from "../../constants/loadersConstants";
+import DotsLoader from "../Loaders/DotsLoader";
+import FacebookLoader from "../Loaders/FacebookLoader";
 
-const isEmpty = (prop) =>
-  prop === null ||
-  prop === undefined ||
-  (prop.hasOwnProperty("length") && prop.length === 0) ||
-  (prop.constructor === Object && Object.keys(prop).length === 0);
+const getLoader = (loader) => {
+  switch (loader) {
+    case DOTS_LOADER: {
+      return <DotsLoader />;
+    }
+    case FACEBOOK_LOADER: {
+      return <FacebookLoader />;
+    }
+    default: {
+      return <div>Загрузка</div>;
+    }
+  }
+};
 
-const LoadingHOC = (loadingProp) => (WrappedComponent) => {
+const LoadingHOC = (loader) => (WrappedComponent) => {
   return class LoadingHOC extends Component {
     render() {
-      return isEmpty(this.props[loadingProp]) ? (
-        <div>Loading</div>
-      ) : (
-        <WrappedComponent {...this.props} />
-      );
+      // eslint-disable-next-line react/prop-types
+      const { isFetching } = this.props;
+      return isFetching ? getLoader(loader) : <WrappedComponent {...this.props} />;
     }
   };
 };

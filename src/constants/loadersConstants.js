@@ -1,0 +1,2 @@
+export const DOTS_LOADER = "DOTS_LOADER";
+export const FACEBOOK_LOADER = "FACEBOOK_LOADER";

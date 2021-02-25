@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Photos from "../components/User/Photos";
+import { PhotosUI } from "../components/User/Photos";
 import NavPanel from "../components/NavPanel";
 import Main from "../components/Main/Main";
 import NotFound from "../components/Errors/NotFound";
@@ -44,9 +44,9 @@ function App(props) {
           />
           <Switch>
             <Route exact path="/photos">
-              <Photos
+              <PhotosUI
                 years={photos.years}
-                isFetchingPhoto={photos.isFetching}
+                isFetching={photos.isFetching}
                 error={photos.error}
                 getPhotos={getPhotosActions}
                 photosAndComments={photosAndComments}

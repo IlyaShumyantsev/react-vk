@@ -4,15 +4,15 @@ import { Button, ButtonGroup } from "reactstrap";
 import "photoswipe/dist/photoswipe.css";
 import "photoswipe/dist/default-skin/default-skin.css";
 import { Gallery, Item } from "react-photoswipe-gallery";
-import RippleLoader from "../Loaders/RippleLoader";
+import LoadingHOC from "../HOC/LoadingHOC";
+import { FACEBOOK_LOADER } from "../../constants/loadersConstants";
 import CommetnsModal from "../Modals/CommentsModal";
-import FacebookLoader from "../Loaders/FacebookLoader";
 import "./Photos.css";
 import { debounce } from "lodash";
 
 const Photos = ({
   years,
-  isFetchingPhoto,
+  isFetching,
   error,
   getPhotos,
   photosAndComments,
@@ -40,70 +40,56 @@ const Photos = ({
   }, [getUsers, photos.comments.items, photos.year, photos.years]);
 
   function renderTemplate() {
-    if (error) {
-      return <p>{error}</p>;
-    } else if (isFetchingPhoto) {
-      return <RippleLoader />;
-    } else {
-      return photosAndComments ? (
-        <Gallery>
-          {modal.isOpen && (
-            <CommetnsModal modal={modal} handleCommentsModal={handleCommentsModal} />
-          )}
-          {photosAndComments.map((entry, index) => {
-            return (
-              <Item
-                original={entry.photo.sizes[entry.photo.sizes.length - 1].url}
-                thumbnail={entry.photo.sizes[0].url}
-                width={entry.photo.sizes[entry.photo.sizes.length - 1].width}
-                height={entry.photo.sizes[entry.photo.sizes.length - 1].height}
-                key={index}
-              >
-                {({ ref, open }) => {
-                  return (
-                    <div className="image-container">
-                      <img
-                        ref={ref}
-                        onClick={open}
-                        src={entry.photo.sizes[entry.photo.sizes.length - 1].url}
-                        alt=""
-                        className="m-2 border border-warning p-1 card "
-                        height="400px"
-                      />
-                      <div className="btn">
-                        <span className="badge badge-danger">{entry.photo.likes.count} ❤</span>
-                        <span className="badge badge-success ml-1">
-                          {entry.photo.reposts.count} ↩
-                        </span>
-                        {entry.comments.length ? (
-                          <button
-                            className="btn btn-warning badge badge-warning ml-1"
-                            onClick={() => handleCommentsModal(!modal.isOpen, entry.comments)}
-                          >
-                            {entry.comments.length} ✉
-                          </button>
-                        ) : (
-                          <span className="badge badge-warning ml-1">
-                            {entry.comments.length} ✉
-                          </span>
-                        )}
-                      </div>
+    return photosAndComments ? (
+      <Gallery>
+        {modal.isOpen && <CommetnsModal modal={modal} handleCommentsModal={handleCommentsModal} />}
+        {photosAndComments.map((entry, index) => {
+          return (
+            <Item
+              original={entry.photo.sizes[entry.photo.sizes.length - 1].url}
+              thumbnail={entry.photo.sizes[0].url}
+              width={entry.photo.sizes[entry.photo.sizes.length - 1].width}
+              height={entry.photo.sizes[entry.photo.sizes.length - 1].height}
+              key={index}
+            >
+              {({ ref, open }) => {
+                return (
+                  <div className="image-container">
+                    <img
+                      ref={ref}
+                      onClick={open}
+                      src={entry.photo.sizes[entry.photo.sizes.length - 1].url}
+                      alt=""
+                      className="m-2 border border-warning p-1 card "
+                      height="400px"
+                    />
+                    <div className="btn">
+                      <span className="badge badge-danger">{entry.photo.likes.count} ❤</span>
+                      <span className="badge badge-success ml-1">
+                        {entry.photo.reposts.count} ↩
+                      </span>
+                      {entry.comments.length ? (
+                        <button
+                          className="btn btn-warning badge badge-warning ml-1"
+                          onClick={() => handleCommentsModal(!modal.isOpen, entry.comments)}
+                        >
+                          {entry.comments.length} ✉
+                        </button>
+                      ) : (
+                        <span className="badge badge-warning ml-1">{entry.comments.length} ✉</span>
+                      )}
                     </div>
-                  );
-                }}
-              </Item>
-            );
-          })}
-        </Gallery>
-      ) : null;
-    }
+                  </div>
+                );
+              }}
+            </Item>
+          );
+        })}
+      </Gallery>
+    ) : null;
   }
 
-  return isFetchingPhoto ? (
-    <div className="row mt-3 justify-content-center ">
-      <FacebookLoader />
-    </div>
-  ) : (
+  return (
     <div>
       <ButtonGroup className="mt-1 col-12">
         <Button
@@ -129,13 +115,13 @@ const Photos = ({
   );
 };
 
-export default Photos;
+export const PhotosUI = LoadingHOC(FACEBOOK_LOADER)(Photos);
 
 Photos.propTypes = {
   years: PropTypes.array.isRequired,
   error: PropTypes.string.isRequired,
   getPhotos: PropTypes.func.isRequired,
-  isFetchingPhoto: PropTypes.bool.isRequired,
+  isFetching: PropTypes.bool.isRequired,
   photosAndComments: PropTypes.array.isRequired,
   handleCommentsModal: PropTypes.func.isRequired,
   modal: PropTypes.object.isRequired,

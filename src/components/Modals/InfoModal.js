@@ -30,6 +30,6 @@ export default InfoModal;
 
 InfoModal.propTypes = {
   props: PropTypes.object.isRequired,
-  title: PropTypes.string.isRequired,
-  message: PropTypes.string.isRequired,
+  title: PropTypes.string,
+  message: PropTypes.string,
 };

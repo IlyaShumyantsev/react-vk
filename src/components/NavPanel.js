@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, DropdownItem } from "reactstrap";
-import { Link } from "react-router-dom";
-import Auth from "./User/Auth";
+import { AuthUI } from "./User/Auth";
+import LinkHOC from "./HOC/LinkHOC";
 
 const NavPanel = ({
   user,
@@ -30,48 +30,42 @@ const NavPanel = ({
       switch (item) {
         case main: {
           return (
-            <Link className="nav-link" key={i} to={Object.fromEntries(title)[item]}>
+            <LinkHOC key={i} to={Object.fromEntries(title)[item]}>
               {item}
-            </Link>
+            </LinkHOC>
           );
         }
         case wall: {
           return (
-            <Link className="nav-link" key={i} to={Object.fromEntries(title)[item]}>
+            <LinkHOC key={i} to={Object.fromEntries(title)[item]}>
               {item}
-            </Link>
+            </LinkHOC>
           );
         }
         case photos: {
           return (
-            <Link
-              className="nav-link"
-              onClick={() => getPhotos(null)}
-              key={i}
-              to={Object.fromEntries(title)[item]}
-            >
+            <LinkHOC key={i} onClick={() => getPhotos(null)} to={Object.fromEntries(title)[item]}>
               {item}
-            </Link>
+            </LinkHOC>
           );
         }
         case music: {
           return (
-            <Link className="nav-link" key={i} to={Object.fromEntries(title)[item]}>
+            <LinkHOC key={i} to={Object.fromEntries(title)[item]}>
               {item}
-            </Link>
+            </LinkHOC>
           );
         }
         case git: {
           return (
-            <Link
-              className="nav-link"
-              target={"_blank"}
+            <LinkHOC
               key={i}
               to={""}
+              target={"_blank"}
               onClick={() => window.open(Object.fromEntries(title)[item])}
             >
               {item}
-            </Link>
+            </LinkHOC>
           );
         }
         default: {
@@ -91,7 +85,7 @@ const NavPanel = ({
             {navElementsRender()}
           </Nav>
           <DropdownItem divider />
-          <Auth
+          <AuthUI
             name={name}
             error={error}
             isFetching={isFetching}
@@ -101,7 +95,7 @@ const NavPanel = ({
             handleLogin={handleLogin}
             handleLogout={handleLogout}
             handleGetAvatar={handleGetAvatar}
-          ></Auth>
+          ></AuthUI>
         </Collapse>
       </Navbar>
     </div>

@@ -3,10 +3,12 @@ import "./FacebookLoader.css";
 
 const FacebookLoader = () => {
   return (
-    <div className="lds-facebook">
-      <div></div>
-      <div></div>
-      <div></div>
+    <div className="row mt-3 justify-content-center ">
+      <div className="lds-facebook">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
     </div>
   );
 };

@@ -8,8 +8,9 @@ import {
   Media,
 } from "reactstrap";
 import PropTypes from "prop-types";
-import DotsLoader from "../Loaders/DotsLoader";
 import InfoModal from "../Modals/InfoModal";
+import LoadingHOC from "../HOC/LoadingHOC";
+import { DOTS_LOADER } from "../../constants/loadersConstants";
 
 class Auth extends Component {
   state = {
@@ -30,7 +31,7 @@ class Auth extends Component {
       image: { width: "32px", height: "32px" },
     };
 
-    return (
+    return this.props.name ? (
       <Media className="align-middle d-flex h-100">
         <img
           alt="avatar"
@@ -56,34 +57,28 @@ class Auth extends Component {
           </DropdownMenu>
         </ButtonDropdown>
       </Media>
-    );
-  };
-
-  render() {
-    if (this.props.error) {
-      return (
-        <div>
-          <InfoModal props={{ message: this.props.error, title: "Ошибка входа" }}></InfoModal>
-          <Button outline color="light" onClick={this.props.handleLogin}>
-            Войти
-          </Button>
-        </div>
-      );
-    }
-    if (this.props.isFetching) {
-      return <DotsLoader></DotsLoader>;
-    } else if (this.props.name) {
-      return this.renderNavPanel();
-    }
-    return (
+    ) : (
       <Button outline color="light" onClick={this.props.handleLogin}>
         Войти
       </Button>
     );
+  };
+
+  render() {
+    return this.props.error ? (
+      <div>
+        <InfoModal props={{ message: this.props.error, title: "Ошибка входа" }}></InfoModal>
+        <Button outline color="light" onClick={this.props.handleLogin}>
+          Войти
+        </Button>
+      </div>
+    ) : (
+      this.renderNavPanel()
+    );
   }
 }
 
-export default Auth;
+export const AuthUI = LoadingHOC(DOTS_LOADER)(Auth);
 
 Auth.propTypes = {
   name: PropTypes.string.isRequired,
