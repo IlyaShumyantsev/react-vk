@@ -12,8 +12,6 @@ import { debounce } from "lodash";
 
 const Photos = ({
   years,
-  isFetching,
-  error,
   getPhotos,
   photosAndComments,
   handleCommentsModal,
@@ -119,9 +117,7 @@ export const PhotosUI = LoadingHOC(FACEBOOK_LOADER)(Photos);
 
 Photos.propTypes = {
   years: PropTypes.array.isRequired,
-  error: PropTypes.string.isRequired,
   getPhotos: PropTypes.func.isRequired,
-  isFetching: PropTypes.bool.isRequired,
   photosAndComments: PropTypes.array.isRequired,
   handleCommentsModal: PropTypes.func.isRequired,
   modal: PropTypes.object.isRequired,
