@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import { Button, ButtonGroup } from "reactstrap";
 import "photoswipe/dist/photoswipe.css";
@@ -9,6 +9,7 @@ import { FACEBOOK_LOADER } from "../../constants/loadersConstants";
 import CommetnsModal from "../Modals/CommentsModal";
 import "./Photos.css";
 import { debounce } from "lodash";
+import useButton from "../Hooks/useButton";
 
 const Photos = ({
   years,
@@ -19,22 +20,17 @@ const Photos = ({
   getUsers,
   photos,
 }) => {
-  const [activeButton, setButtonState] = useState(null);
+  const { activeButton, onBtnClick, onBtnChange } = useButton(photos.year);
 
-  const onBtnClick = (index) => (e) => {
-    const year = +e.currentTarget.innerText;
-    isNaN(year) ? getPhotoDebounce(null) : getPhotoDebounce(year);
-    setButtonState(index);
-  };
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const getPhotoDebounce = useCallback(debounce(getPhotos, 300), []);
+  const getPhotoDebounce = useCallback(debounce(getPhotos, 300), [debounce]);
 
   useEffect(() => {
-    getUsers([...new Set(photos.comments.items?.map((item) => item.from_id))]);
-    photos.years.indexOf(photos.year) !== -1
-      ? setButtonState(photos.years.indexOf(photos.year))
-      : setButtonState(null);
+    const usersId = [...new Set(photos.comments.items?.map((item) => item.from_id))];
+    getUsers(usersId);
+
+    const [yearsList, currentYear] = [photos.years, photos.year];
+    onBtnChange(yearsList.indexOf(currentYear));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getUsers, photos.comments.items, photos.year, photos.years]);
 
   function renderTemplate() {
@@ -93,7 +89,7 @@ const Photos = ({
         <Button
           color="warning"
           className={`btn ${activeButton === null ? "active" : ""}`}
-          onClick={onBtnClick(null)}
+          onClick={onBtnClick(() => debounce(getPhotos, 300))}
         >
           Все
         </Button>
@@ -101,7 +97,7 @@ const Photos = ({
           <Button
             color="warning"
             className={`btn ${activeButton === index ? "active" : ""}`}
-            onClick={onBtnClick(index)}
+            onClick={onBtnClick(() => debounce(getPhotos, 300))}
             key={index}
           >
             {item}
