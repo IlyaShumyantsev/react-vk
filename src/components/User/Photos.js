@@ -22,7 +22,8 @@ const Photos = ({
 }) => {
   const { activeButton, onBtnClick, onBtnChange } = useButton(photos.year);
 
-  const getPhotoDebounce = useCallback(debounce(getPhotos, 300), [debounce]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const getPhotoDebounce = useCallback(debounce(getPhotos, 300), []);
 
   useEffect(() => {
     const usersId = [...new Set(photos.comments.items?.map((item) => item.from_id))];
@@ -44,8 +45,7 @@ const Photos = ({
               thumbnail={entry.photo.sizes[0].url}
               width={entry.photo.sizes[entry.photo.sizes.length - 1].width}
               height={entry.photo.sizes[entry.photo.sizes.length - 1].height}
-              key={index}
-            >
+              key={index}>
               {({ ref, open }) => {
                 return (
                   <div className="image-container">
@@ -65,8 +65,7 @@ const Photos = ({
                       {entry.comments.length ? (
                         <button
                           className="btn btn-warning badge badge-warning ml-1"
-                          onClick={() => handleCommentsModal(!modal.isOpen, entry.comments)}
-                        >
+                          onClick={() => handleCommentsModal(!modal.isOpen, entry.comments)}>
                           {entry.comments.length} ✉
                         </button>
                       ) : (
@@ -89,17 +88,15 @@ const Photos = ({
         <Button
           color="warning"
           className={`btn ${activeButton === null ? "active" : ""}`}
-          onClick={onBtnClick(() => debounce(getPhotos, 300))}
-        >
+          onClick={onBtnClick(getPhotoDebounce)}>
           Все
         </Button>
         {years.map((item, index) => (
           <Button
             color="warning"
             className={`btn ${activeButton === index ? "active" : ""}`}
-            onClick={onBtnClick(() => debounce(getPhotos, 300))}
-            key={index}
-          >
+            onClick={onBtnClick(getPhotoDebounce)}
+            key={index}>
             {item}
           </Button>
         ))}
