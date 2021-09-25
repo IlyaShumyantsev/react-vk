@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import "./CommentsModal.css";
 
 const CommetnsModal = ({ modal, handleCommentsModal }) => {
   const onToggle = () => handleCommentsModal(!modal.isOpen, null);
@@ -14,7 +15,7 @@ const CommetnsModal = ({ modal, handleCommentsModal }) => {
       <ModalHeader toggle={onToggle}>Комментарии к фото</ModalHeader>
       {modal?.comments?.map((comment, index) => (
         <ModalBody key={index}>
-          <div className="media border p-3">
+          <div className="media border p-3 unselectable">
             <img
               src={comment.user[0].photo_50}
               alt=""
@@ -25,7 +26,7 @@ const CommetnsModal = ({ modal, handleCommentsModal }) => {
               <h4>
                 {comment.user[0].first_name}&nbsp;
                 <small>
-                  <i className="text-primary">{new Date(comment.date * 1000).toLocaleString()}</i>
+                  <i className="text-secondary">{new Date(comment.date * 1000).toLocaleString()}</i>
                 </small>
               </h4>
               {comment?.text}
@@ -36,7 +37,7 @@ const CommetnsModal = ({ modal, handleCommentsModal }) => {
                     {attachment.photo && (
                       <img
                         src={attachment.photo?.sizes[attachment.photo?.sizes.length - 1].url}
-                        alt=""
+                        alt={`фото от ${comment.user[0].first_name}`}
                         height="190px"
                         className="m-1"
                       />
@@ -44,7 +45,7 @@ const CommetnsModal = ({ modal, handleCommentsModal }) => {
                     {attachment.sticker && (
                       <img
                         src={attachment.sticker?.images[attachment.sticker?.images.length - 1].url}
-                        alt=""
+                        alt={`стикер от ${comment.user[0].first_name}`}
                         height="200px"
                         className="m-1"
                       />
@@ -61,7 +62,7 @@ const CommetnsModal = ({ modal, handleCommentsModal }) => {
         </ModalBody>
       ))}
       <ModalFooter>
-        <Button color="danger" onClick={onToggle}>
+        <Button color="info" onClick={onToggle}>
           Закрыть
         </Button>
       </ModalFooter>

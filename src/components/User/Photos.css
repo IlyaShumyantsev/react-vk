@@ -13,6 +13,14 @@
   /* font-size: 16px; */
   /* padding: 12px 24px; */
   border: none;
-  /* cursor: pointer; */
+  cursor: default !important;
   /* border-radius: 5px; */
+}
+
+.btnComment {
+  position: absolute;
+  top: 90%;
+  left: 2%;
+  border: none;
+  cursor: pointer !important;
 }

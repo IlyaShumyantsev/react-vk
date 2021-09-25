@@ -37,7 +37,12 @@ const NavPanel = ({
         }
         case wall: {
           return (
-            <Link className="nav-link" key={i} to={Object.fromEntries(title)[item]}>
+            <Link
+              style={{ pointerEvents: "none" }}
+              className="nav-link"
+              key={i}
+              to={Object.fromEntries(title)[item]}
+            >
               {item}
             </Link>
           );
@@ -56,7 +61,12 @@ const NavPanel = ({
         }
         case music: {
           return (
-            <Link className="nav-link" key={i} to={Object.fromEntries(title)[item]}>
+            <Link
+              style={{ pointerEvents: "none" }}
+              className="nav-link"
+              key={i}
+              to={Object.fromEntries(title)[item]}
+            >
               {item}
             </Link>
           );
@@ -65,7 +75,6 @@ const NavPanel = ({
           return (
             <Link
               className="nav-link"
-              target={"_blank"}
               key={i}
               to={""}
               onClick={() => window.open(Object.fromEntries(title)[item])}
@@ -84,7 +93,7 @@ const NavPanel = ({
   return (
     <div>
       <Navbar color="warning" light expand="md">
-        <NavbarBrand href="/">react-vk</NavbarBrand>
+        <NavbarBrand to={"/"}>react-vk</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
