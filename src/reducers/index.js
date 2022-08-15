@@ -1,10 +1,12 @@
 import { combineReducers } from "redux";
-import { pageReducer } from "./page";
+import { photosReducer } from "./photos";
 import { userReducer } from "./user";
 import { navbarReducer } from "./navbar";
+import { modalReducer } from "./modal";
 
 export const rootReducer = combineReducers({
-  page: pageReducer,
+  photos: photosReducer,
   user: userReducer,
   navbar: navbarReducer,
+  modal: modalReducer,
 });

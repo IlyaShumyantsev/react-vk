@@ -47,10 +47,6 @@ class Auth extends Component {
           </Button>
           <DropdownToggle split color="light" />
           <DropdownMenu>
-            <DropdownItem disabled>Действие 1</DropdownItem>
-            <DropdownItem disabled>Действие 2</DropdownItem>
-            <DropdownItem disabled>Действие 3</DropdownItem>
-            <DropdownItem divider />
             <DropdownItem onClick={this.props.handleLogout}>Выйти</DropdownItem>
           </DropdownMenu>
         </ButtonDropdown>
